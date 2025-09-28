@@ -18,15 +18,11 @@ def find_marker(frame_bgr, bgr_color):
         dx = gx[y, x]/10
         dy = gy[y, x]/10
 
-        if(np.hypot(dx, dy)<0.1):
+        if(np.hypot(dx, dy)<1):
             # print(f"break {i} {dx} {dy}")
             break
 
-        # # 正規化してステップに合わせる
-        # norm = np.hypot(dx, dy)
-        # if norm > 0:
-        #     dx = dx / norm * 1
-        #     dy = dy / norm * 1
+     
             
         cv2.line(frame_bgr, (x, y), (int(x + dx ), int(y + dy )), (255, 255, 0), 1)
 

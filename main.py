@@ -53,32 +53,30 @@ active_marker_offset=0
 
 time.sleep(2)
 print("start")
-while True:
+try:
+	while True:
 
 
-	marker_update.update_leds(active_marker_offset,marker_id_to_color)
-	active_marker_offset+=1
+		marker_update.update_leds(active_marker_offset,marker_id_to_color)
+		active_marker_offset+=1
 
-	# print(f"LED {active_marker_id} ON")
-
-
-
-	marker_update_event.set()
+		# print(f"LED {active_marker_id} ON")
 
 
-	for event in camera_done_events:
-		event.wait()
-	
-	for event in camera_done_events:
-		event.clear()
+
+		marker_update_event.set()
 
 
-	marker_update_event.clear()
-	
+		for event in camera_done_events:
+			event.wait()
+		
+		for event in camera_done_events:
+			event.clear()
 
 
-	
-	
-
+		marker_update_event.clear()
+finally:
+	print("clearing led")
+	marker_update.led_clear()
 
 

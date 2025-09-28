@@ -20,7 +20,7 @@ def camera_worker(name, cap, marker_update_event, done_event, marker_id_to_color
         # time.sleep(0.5)  # 少し待つ（必要に応じて調整）
 
 
-        if cv2.waitKey(500) & 0xFF == ord('q'):
+        if cv2.waitKey(150) & 0xFF == ord('q'):
             break
 
         ret, frame = cap.read()
@@ -71,8 +71,8 @@ def camera_worker(name, cap, marker_update_event, done_event, marker_id_to_color
 
         done_event.set()
         # 表示用にフレームを2倍にリサイズ
-        display_frame = cv2.resize(frame, (frame.shape[1] * 2, frame.shape[0] * 2), interpolation=cv2.INTER_NEAREST)
-        cv2.imshow(name, display_frame)
+        # frame = cv2.resize(frame, (frame.shape[1] * 2, frame.shape[0] * 2), interpolation=cv2.INTER_NEAREST)
+        cv2.imshow(name, frame)
 
 
   
