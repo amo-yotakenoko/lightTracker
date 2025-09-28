@@ -67,7 +67,8 @@ void loop()
     int r = Serial.read(); // 1バイト目: LED番号
     int g = Serial.read(); // 1バイト目: LED番号
     int b = Serial.read(); // 1バイト目: LED番号
-    if (ledIndex == 255)   // led_clear
+
+    if (ledIndex == 255) // led_clear
     {
       clearStrip();
       strip.show();
