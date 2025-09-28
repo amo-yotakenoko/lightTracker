@@ -1,0 +1,25 @@
+ ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N ""
+
+
+ssh-copy-id pi@192.168.11.52
+
+
+
+ ping raspberrypi.local
+
+
+wsl
+ ssh 'pi@192.168.11.52'
+
+
+
+
+
+  python3 -m venv --without-pip .venv
+  source .venv/bin/activate
+   curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+    python get-pip.py
+
+
+
+	cd /home/pi/lightTracker&&sudo .venv/bin/python light.py
