@@ -15,12 +15,12 @@ def camera_worker(name, cap, marker_update_event, done_event, marker_id_to_color
     cv2.moveWindow(name, window_pos[0], window_pos[1])
 
     while True:
-
+        marker_update_event.wait()  # イベント待ち
 
         # time.sleep(0.5)  # 少し待つ（必要に応じて調整）
 
 
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        if cv2.waitKey(150) & 0xFF == ord('q'):
             break
 
         ret, frame = cap.read()
