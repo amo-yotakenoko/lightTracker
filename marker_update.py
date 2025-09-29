@@ -128,13 +128,13 @@ def led_clear():
 
 def update_leds(active_marker_offset, marker_id_to_color):
     marker_id_to_color.clear()
-    
-    # それぞれに赤、緑、青を割り当てる
-    colors = [ (255, 0, 0),(0, 255, 0),(0, 0, 255),]
-            #   (0, 255, 255),(255, 0, 255),(255, 255, 0),]
 
-    for i,color in range(30):
-        marker_id_to_color[i] = (0, 255, 0)
+    for i in range(30):
+        marker_id_to_color[i] = (0, 100, 0)
+    marker_id_to_color[active_marker_offset%30] = (0, 0, 100)
+
+
+
     
 
     for marker_id,rgb in marker_id_to_color.items():

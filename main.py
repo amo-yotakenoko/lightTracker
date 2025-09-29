@@ -13,7 +13,7 @@ load_dotenv()
 marker_update.marker_initialize()
 
 
-camera_ids=[0,1]
+camera_ids=[0]
 marker_id_to_color={}
 
 threadings=[]
@@ -59,22 +59,13 @@ try:
 
 		marker_update.update_leds(active_marker_offset,marker_id_to_color)
 		active_marker_offset+=1
+		time.sleep(1)
+		
 
 		# print(f"LED {active_marker_id} ON")
 
 
 
-		marker_update_event.set()
-
-
-		for event in camera_done_events:
-			event.wait()
-		
-		for event in camera_done_events:
-			event.clear()
-
-
-		marker_update_event.clear()
 finally:
 	print("clearing led")
 	marker_update.led_clear()
