@@ -28,24 +28,21 @@ x_spacing = 700 # ウィンドウ幅想定
 y_spacing = 300 # ウィンドウ高さ想定
 
 for idx, camera_id in enumerate(camera_ids):
-			# ウィンドウ位置を計算（横に並べる例）
-		x = x_offset + (idx % 3) * x_spacing
-		y = y_offset + (idx // 3) * y_spacing
+            # ウィンドウ位置を計算（横に並べる例）
+        x = x_offset + (idx % 3) * x_spacing
+        y = y_offset + (idx // 3) * y_spacing
 
-		cap=cv2.VideoCapture(camera_id)
-		done_event = threading.Event()
-		camera_done_events.append(done_event)
-		threadings.append(threading.Thread(target=camera.camera_worker,
-									  daemon=True,
-									    args=(f"{camera_id}",
-				   cap,
-				   marker_update_event,
-				   done_event,
-				   marker_id_to_color,
-				   (x,y),)))
+        cap=cv2.VideoCapture(camera_id)
+        done_event = threading.Event()
+        camera_done_events.append(done_event)
+        threadings.append(threading.Thread(target=camera.Camera.detect_markers,
+                                      daemon=True,
+                                        args=(f"{camera_id}",
+                   cap,
+                   (x,y),)))
 
 for t in threadings:
-	t.start()
+    t.start()
 
 
 active_marker_offset=0
@@ -54,20 +51,21 @@ active_marker_offset=0
 time.sleep(2)
 print("start")
 try:
-	while True:
+    while True: 
 
 
-		marker_update.update_leds(active_marker_offset,marker_id_to_color)
-		active_marker_offset+=1
-		time.sleep(1)
-		
+        marker_update.update_leds(active_marker_offset,marker_id_to_color)
+        active_marker_offset+=1
+        time.sleep(1)
+        
+        time.sleep(1)
 
-		# print(f"LED {active_marker_id} ON")
+
 
 
 
 finally:
-	print("clearing led")
-	marker_update.led_clear()
+    print("clearing led")
+    marker_update.led_clear()
 
 
