@@ -10,11 +10,12 @@ import marker_update
 class Marker:
 
    
-    def __init__(self, position):
+    def __init__(self, position, marker_id_to_color_id):
         self.track = []
         self.update_position(position)
         self.color=None
-        self.marker_color_index=-1
+        self.marker_color_id=-1
+        self.marker_id_to_color_id = marker_id_to_color_id
 
         self.probability_distribution=np.array([1/30]*30)
         
@@ -27,24 +28,62 @@ class Marker:
 
 
     def update_color(self, color):
-        distances = [np.linalg.norm(c - np.array(color)) for c in marker_update.marker_rgbs]
-        print( np.argmin(distances))
-        self.marker_color_index = np.argmin(distances)
+        distances = [np.linalg.norm(c - np.array(color)) for c in marker_update.marker_bgrs]
+        self.marker_color_id = np.argmin(distances)
 
 
+    def now_probability(self):
+        
+        now_probability_distribution=np.array([0.001]*30)
+        for i in range(30):
+            # print(self.marker_id_to_color_id,self.marker_color_id,i,self.marker_color_id == self.marker_id_to_color_id[i])
+
+            if self.marker_color_id == self.marker_id_to_color_id[i]:
+                now_probability_distribution[i]=100
+
+            # 正規化
+        now_probability_distribution /= now_probability_distribution.sum()
+        # print(now_probability_distribution,self.entropy())
+        return now_probability_distribution
+
+    def probability_update(self):
+        
+        self.probability_distribution = self.probability_distribution * self.now_probability()
+        self.probability_distribution /= self.probability_distribution.sum()
+
+
+    def entropy(self):
+        p = self.probability_distribution
+        p = p[p > 0]  # 0の要素を除外
+        return -np.sum(p * np.log2(p))
+    
+
+    def estimate_id(self):
+        max_val = self.probability_distribution.max()
+        max_indices = np.where(self.probability_distribution == max_val)[0]
+        return max_indices.tolist()
 
 
     def draw_info(self, frame):
         for i in range(1, len(self.track)):
             cv2.line(frame, tuple(self.track[i - 1].astype(int)), tuple(self.track[i].astype(int)), (0, 0, 255), 1)
-            cv2.putText(frame, f"{self.marker_color_index}", (int(self.position[0])+5, int(self.position[1])-5), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (255, 255, 255), 1)
-            # cv2.putText(frame, f"{self.probability_distribution}", (int(self.position[0])+10, int(self.position[1])-5), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (255, 255, 255), 1)
+            color=(marker_update.marker_bgrs[self.marker_color_id]*255).astype(int).tolist()
+            # print(f"{self.marker_color_id=} {color=}")
+            # cv2.putText(frame, f"{self.marker_color_id}", (int(self.position[0])-5, int(self.position[1])-5), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (255, 255, 255), 1)
+            cv2.putText(frame, f"{self.entropy()}bit", (int(self.position[0])+10, int(self.position[1])-5), cv2.FONT_HERSHEY_SIMPLEX, 0.2,color, 1)
+            ids = self.estimate_id()
+            cv2.putText(frame, f"{ids}", (int(self.position[0])-20, int(self.position[1])-5), cv2.FONT_HERSHEY_SIMPLEX, 0.3,color, 1)
+            
+
 
 
 class Camera:
 
+    def __init__(self, marker_id_to_color_id):
+        self.marker_id_to_color_id = marker_id_to_color_id
+        self.markers = []
 
-    def detect_markers(name, cap, window_pos):
+    def detect_markers(self,name, cap, window_pos):
         id_to_xy = [(0,0)] * 30  # 最大30個のマーカーを想定
         i = 0
         cap.set(cv2.CAP_PROP_EXPOSURE, -9)  # 負の値が有効な場合もある
@@ -54,8 +93,6 @@ class Camera:
         # 右上にウィンドウを表示（x=1000, y=50 は適宜調整）
         cv2.namedWindow(name)
         cv2.moveWindow(name, window_pos[0], window_pos[1])
-
-        markers = []
 
         while True:
 
@@ -77,7 +114,7 @@ class Camera:
             gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             _, threshold_frame = cv2.threshold(gray_frame, 50, 255, cv2.THRESH_BINARY)
             contours, _ = cv2.findContours(threshold_frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            print(f"{name} {i} フレーム内の輪郭数: {len(contours)}")
+            # print(f"{name} {i} フレーム内の輪郭数: {len(contours)}")
             # cv2.drawContours(frame, contours, -1, (0, 100, 0), 2)
             detect_marker_positions = [] 
             detect_marker_mean_colors = [] 
@@ -107,7 +144,7 @@ class Camera:
 
             # --- forループの外に移動 ---
             # markers は Marker クラスのリスト
-            markers_positions = np.array([m.position for m in markers], dtype=np.float32)
+            markers_positions = np.array([m.position for m in self.markers], dtype=np.float32)
             if markers_positions.size == 0:
                 markers_positions = np.empty((0, 2), dtype=np.float32)
             else:
@@ -132,29 +169,29 @@ class Camera:
             # 残存マーカー更新
             for i, j in zip(matched_prev, matched_new):
                 if cost_matrix[i, j] <= max_dist:
-                    update_marker=markers[i]
+                    update_marker=self.markers[i]
                     update_marker.update_position( detect_marker_positions[j])
                     update_marker.update_color( detect_marker_mean_colors[j])
                     matched_old.append(i)
                     matched_new_valid.append(j)
 
             to_remove = []  # 削除対象のインデックス
-            for i in range(len(markers)):
+            for i in range(len(self.markers)):
                 if i not in matched_old:
                     to_remove.append(i)
             # 逆順で削除
             for i in sorted(to_remove, reverse=True):
-                del markers[i]
+                del self.markers[i]
 
             # 追加：matched_new_valid に入っていない新しい点
             for j in range(len(detect_marker_positions)):
                 if j not in matched_new_valid:
-                    markers.append(Marker(detect_marker_positions[j]))
+                    self.markers.append(Marker(detect_marker_positions[j], self.marker_id_to_color_id))
                                     
 
 
 
-            for i,m in enumerate(markers):
+            for i,m in enumerate(self.markers):
                 m.draw_info(frame)
                 # cv2.putText(frame, f"ID:{i}", (int(m.position[0])+5, int(m.position[1])-5), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (255, 255, 255), 1)
             
@@ -171,3 +208,9 @@ class Camera:
 
         cap.release()
         cv2.destroyWindow(name)
+
+
+    def probability_update(self):
+        # pass
+        for m in self.markers:
+            m.probability_update()

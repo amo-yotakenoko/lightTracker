@@ -1,39 +1,11 @@
-import serial
-import os
 import colorsys
 import random
 import numpy as np
+from arduino_controller import led_set, led_show, led_clear
 
-arduino = None
+# RGB順
+marker_bgrs = [np.array([0, 0, 1]), np.array([0, 1, 0]), np.array([1, 0, 0])]
 
-def marker_initialize():
-    global arduino
-    port = os.getenv("PORT")
-    arduino = serial.Serial(port, 115200, timeout=1)
-
-def led_set(index: int, color: tuple[int,int,int]):
-    """指定したLEDの色を送信"""
-    global arduino
-    if arduino is None:
-        raise RuntimeError("Arduino が初期化されていません")
-    print(f"led_set {index} {color}"    )
-    r, g, b = color
-    arduino.write(bytes([index, r, g, b]))
-
-
-    
-
-def led_show():
-    global arduino
-    if arduino is None:
-        raise RuntimeError("Arduino が初期化されていません")
-    arduino.write(bytes([254,0,0,0]))
-
-def led_clear():
-    global arduino
-    if arduino is None:
-        raise RuntimeError("Arduino が初期化されていません")
-    arduino.write(bytes([255,0,0,0]))
 
 # def update_leds(active_marker_offset):
 #     marker_id_to_color={}
@@ -127,21 +99,41 @@ def led_clear():
 #     led_show()
 
 
-marker_rgbs = [np.array([1, 0, 0]), np.array([0, 1, 0]), np.array([0, 0, 1])]
+# # 順番
+# def update_leds_sequentially(active_marker_offset, marker_id_to_color_id):
+
+#     for i in range(30):
+#         marker_id_to_color_id[i] = 0
+#     marker_id_to_color_id[active_marker_offset%30] =1
+
+#     for marker_id,rgb in enumerate( marker_id_to_color_id):
+
+#         led_set(marker_id,tuple( (np.array(marker_bgrs[marker_id_to_color_id[marker_id]])*100).astype(int) ))
+
+#     led_show()
+
+# 最小エントロピーを目指す
+def update_leds_min_entropy( marker_id_to_color_id,cameras):
+
+    probability_distribution_sum= np.zeros(30, dtype=float)
+    for cam in cameras:
+        for m in cam.markers:
+            probability_distribution_sum+= m.probability_distribution
+
+    indices_desc = np.argsort(probability_distribution_sum)[::-1]
+    print(indices_desc)
+    pattern= [0,1,2]
+    # pattern= [0,1,1,2,2,2,2]
+    for i,marker_id in enumerate(indices_desc):
+
+        marker_id_to_color_id[marker_id] = pattern[i%len(pattern)]
 
 
+    
 
-def update_leds(active_marker_offset, marker_id_to_color):
-    marker_id_to_color.clear()
 
-    for i in range(30):
-        marker_id_to_color[i] = 0
-    marker_id_to_color[active_marker_offset%30] =1
+    for marker_id,rgb in enumerate( marker_id_to_color_id):
 
-    # marker_id_to_color[(active_marker_offset+1)%30] = marker_colors[0]*100
-
-    for marker_id,rgb in marker_id_to_color.items():
-        # print(f"LED {marker_id} {rgb}")
-        led_set(marker_id,marker_rgbs[marker_id_to_color[marker_id]]*100)
+        led_set(marker_id,tuple( (np.array(marker_bgrs[marker_id_to_color_id[marker_id]])*100).astype(int) ))
 
     led_show()

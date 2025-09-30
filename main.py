@@ -7,15 +7,19 @@ import threading
 import camera
 from dotenv import load_dotenv
 import os
+import arduino_controller
 
 load_dotenv()
 
-marker_update.marker_initialize()
+arduino_controller.initialize()
 
 
 camera_ids=[0]
-marker_id_to_color={}
+marker_id_to_color_id=[-1] *30
 
+
+
+cameras = []
 threadings=[]
 marker_update_event = threading.Event()
 camera_done_events = []
@@ -32,14 +36,17 @@ for idx, camera_id in enumerate(camera_ids):
         x = x_offset + (idx % 3) * x_spacing
         y = y_offset + (idx // 3) * y_spacing
 
+        cam = camera.Camera(marker_id_to_color_id)
+        cameras.append(cam)
         cap=cv2.VideoCapture(camera_id)
         done_event = threading.Event()
         camera_done_events.append(done_event)
-        threadings.append(threading.Thread(target=camera.Camera.detect_markers,
+        threadings.append(threading.Thread(target=cam.detect_markers,
                                       daemon=True,
                                         args=(f"{camera_id}",
                    cap,
                    (x,y),)))
+
 
 for t in threadings:
     t.start()
@@ -53,12 +60,18 @@ print("start")
 try:
     while True: 
 
-
-        marker_update.update_leds(active_marker_offset,marker_id_to_color)
-        active_marker_offset+=1
-        time.sleep(1)
         
-        time.sleep(1)
+        # marker_update.update_leds_sequentially(active_marker_offset,marker_id_to_color_id)
+        marker_update.update_leds_min_entropy(marker_id_to_color_id,cameras)
+        active_marker_offset+=1
+        time.sleep(0.1)
+
+
+        for cam in cameras:            
+             cam.probability_update()
+
+        time.sleep(0.1)
+
 
 
 
@@ -66,6 +79,6 @@ try:
 
 finally:
     print("clearing led")
-    marker_update.led_clear()
+    arduino_controller.led_clear()
 
 
