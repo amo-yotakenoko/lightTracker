@@ -1,10 +1,29 @@
 import colorsys
 import random
+import time
 import numpy as np
 from arduino_controller import led_set, led_show, led_clear
 
 # RGB順
 marker_bgrs = [np.array([0, 0, 1]), np.array([0, 1, 0]), np.array([1, 0, 0])]
+
+
+def run_marker_tracking_loop(cameras, marker_id_to_color_id):
+    active_marker_offset=0
+    try:
+        while True: 
+            # marker_update.update_leds_sequentially(active_marker_offset,marker_id_to_color_id)
+            update_leds_min_entropy(marker_id_to_color_id,cameras)
+            active_marker_offset+=1
+            time.sleep(0.5)
+
+            for cam in cameras:            
+                 cam.probability_update()
+    finally:
+        print("clearing led")
+        led_clear()
+
+
 
 
 # def update_leds(active_marker_offset):

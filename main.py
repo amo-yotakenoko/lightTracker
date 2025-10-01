@@ -48,37 +48,21 @@ for idx, camera_id in enumerate(camera_ids):
                    (x,y),)))
 
 
+# マーカー更新ループのスレッドを追加
+threadings.append(threading.Thread(target=marker_update.run_marker_tracking_loop, 
+                                  daemon=True,
+                                  args=(cameras, marker_id_to_color_id)))
+
+
 for t in threadings:
     t.start()
 
 
-active_marker_offset=0
-
-
-time.sleep(2)
 print("start")
 try:
-    while True: 
-
-        
-        # marker_update.update_leds_sequentially(active_marker_offset,marker_id_to_color_id)
-        marker_update.update_leds_min_entropy(marker_id_to_color_id,cameras)
-        active_marker_offset+=1
-        time.sleep(0.5)
-
-
-        for cam in cameras:            
-             cam.probability_update()
-
-        # time.sleep(0.1)
-
-
-
-
-
-
-finally:
-    print("clearing led")
-    arduino_controller.led_clear()
-
+    # すべてのスレッドが終了するのを待つ
+    for t in threadings:
+        t.join()
+except KeyboardInterrupt:
+    print("\nExiting...")
 
