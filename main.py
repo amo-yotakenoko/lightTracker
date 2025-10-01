@@ -64,13 +64,13 @@ try:
         # marker_update.update_leds_sequentially(active_marker_offset,marker_id_to_color_id)
         marker_update.update_leds_min_entropy(marker_id_to_color_id,cameras)
         active_marker_offset+=1
-        time.sleep(0.1)
+        time.sleep(0.5)
 
 
         for cam in cameras:            
              cam.probability_update()
 
-        time.sleep(0.1)
+        # time.sleep(0.1)
 
 
 

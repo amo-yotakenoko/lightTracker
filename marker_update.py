@@ -120,8 +120,11 @@ def update_leds_min_entropy( marker_id_to_color_id,cameras):
         for m in cam.markers:
             probability_distribution_sum+= m.probability_distribution
 
-    indices_desc = np.argsort(probability_distribution_sum)[::-1]
-    print(indices_desc)
+    # 値が同じ時にランダムにするために微小な乱数を足す
+    noise = np.random.rand(len(probability_distribution_sum)) * 1e-9
+    indices_desc = np.argsort(probability_distribution_sum + noise)[::-1]
+    # print(indices_
+    # desc)
     pattern= [0,1,2]
     # pattern= [0,1,1,2,2,2,2]
     for i,marker_id in enumerate(indices_desc):
@@ -133,7 +136,8 @@ def update_leds_min_entropy( marker_id_to_color_id,cameras):
 
 
     for marker_id,rgb in enumerate( marker_id_to_color_id):
-
+        # if(marker_id%2!=0):
+        #     continue
         led_set(marker_id,tuple( (np.array(marker_bgrs[marker_id_to_color_id[marker_id]])*100).astype(int) ))
 
     led_show()

@@ -34,12 +34,12 @@ class Marker:
 
     def now_probability(self):
         
-        now_probability_distribution=np.array([0.001]*30)
+        now_probability_distribution=np.array([0.01]*30)
         for i in range(30):
             # print(self.marker_id_to_color_id,self.marker_color_id,i,self.marker_color_id == self.marker_id_to_color_id[i])
 
             if self.marker_color_id == self.marker_id_to_color_id[i]:
-                now_probability_distribution[i]=100
+                now_probability_distribution[i]=1
 
             # 正規化
         now_probability_distribution /= now_probability_distribution.sum()
@@ -70,9 +70,11 @@ class Marker:
             color=(marker_update.marker_bgrs[self.marker_color_id]*255).astype(int).tolist()
             # print(f"{self.marker_color_id=} {color=}")
             # cv2.putText(frame, f"{self.marker_color_id}", (int(self.position[0])-5, int(self.position[1])-5), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (255, 255, 255), 1)
-            cv2.putText(frame, f"{self.entropy()}bit", (int(self.position[0])+10, int(self.position[1])-5), cv2.FONT_HERSHEY_SIMPLEX, 0.2,color, 1)
+            entropy=self.entropy()
+            if(entropy>1):
+                cv2.putText(frame, f"{entropy:.3f}bit", (int(self.position[0])+10, int(self.position[1])-5), cv2.FONT_HERSHEY_SIMPLEX, 0.2,color, 1)
             ids = self.estimate_id()
-            cv2.putText(frame, f"{ids}", (int(self.position[0])-20, int(self.position[1])-5), cv2.FONT_HERSHEY_SIMPLEX, 0.3,color, 1)
+            cv2.putText(frame, f"{ids}", (int(self.position[0])-20, int(self.position[1])-10), cv2.FONT_HERSHEY_SIMPLEX, 0.3,color, 1)
             
 
 
@@ -86,7 +88,7 @@ class Camera:
     def detect_markers(self,name, cap, window_pos):
         id_to_xy = [(0,0)] * 30  # 最大30個のマーカーを想定
         i = 0
-        cap.set(cv2.CAP_PROP_EXPOSURE, -9)  # 負の値が有効な場合もある
+        cap.set(cv2.CAP_PROP_EXPOSURE, -7)  # 負の値が有効な場合もある
         cap.set(cv2.CAP_PROP_GAIN, 0)       # ゲインを抑えるとノイズ減少
         cap.set(cv2.CAP_PROP_BRIGHTNESS, 0) # 明るさ補正を無効に近づける
 
@@ -112,7 +114,8 @@ class Camera:
         
 
             gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            _, threshold_frame = cv2.threshold(gray_frame, 50, 255, cv2.THRESH_BINARY)
+            threshold=100
+            _, threshold_frame = cv2.threshold(gray_frame, 100, 255, cv2.THRESH_BINARY)
             contours, _ = cv2.findContours(threshold_frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
             # print(f"{name} {i} フレーム内の輪郭数: {len(contours)}")
             # cv2.drawContours(frame, contours, -1, (0, 100, 0), 2)
@@ -162,7 +165,7 @@ class Camera:
 
             matched_prev, matched_new = linear_sum_assignment(cost_matrix)
 
-            max_dist = 50
+            max_dist = 5000
             matched_old = []           # 「残存マーカー」のインデックス（過去フレームの markers リスト内でマッチしたもの）
             matched_new_valid = []     # 「残存マーカーに対応する新しい点」のインデックス（detect_marker_positions 内でマッチしたもの）
 
@@ -200,7 +203,7 @@ class Camera:
 
 
             # 表示用にフレームを2倍にリサイズ
-            frame = cv2.resize(frame, (frame.shape[1] * 2, frame.shape[0] * 2), interpolation=cv2.INTER_NEAREST)
+            frame = cv2.resize(frame, (frame.shape[1] * 2, frame.shape[0] * 2), interpolation=cv2.INTER_CUBIC)
             cv2.imshow(name, frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
