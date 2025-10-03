@@ -8,6 +8,7 @@ import camera
 from dotenv import load_dotenv
 import os
 import arduino_controller
+from arduino_controller import led_set, led_show, led_clear
 
 load_dotenv()
 
@@ -61,8 +62,11 @@ for t in threadings:
 print("start")
 try:
     # すべてのスレッドが終了するのを待つ
-    for t in threadings:
-        t.join()
+    # Ctrl+Cで終了できるように、joinにタイムアウトを設定してループする
+    while any(t.is_alive() for t in threadings):
+        for t in threadings:
+            t.join(0.1)
 except KeyboardInterrupt:
+    led_clear()
     print("\nExiting...")
 

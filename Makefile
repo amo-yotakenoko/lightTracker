@@ -19,19 +19,26 @@ deploy:
 # Arduino
 BOARD_FQBN = arduino:avr:uno
 SKETCH = lightTracker.ino
+AUTOPATTERN_SKETCH = autopattern.ino
 
 
-.PHONY: upload arduino port
+.PHONY: upload arduino port autopattern
 
 arduino:
 	@echo "Using port: $(PORT)"
 	cmd.exe /C "arduino-cli compile --fqbn $(BOARD_FQBN) $(SKETCH)"
 	cmd.exe /C "arduino-cli upload -p $(PORT) --fqbn $(BOARD_FQBN) $(SKETCH)"
 
+autopattern:
+	@echo "Using port: $(PORT)"
+	cmd.exe /C "arduino-cli compile --fqbn $(BOARD_FQBN) $(AUTOPATTERN_SKETCH)"
+	cmd.exe /C "arduino-cli upload -p $(PORT) --fqbn $(BOARD_FQBN) $(AUTOPATTERN_SKETCH)"
+
 port:
 	 cmd.exe /C "arduino-cli board list"
 
-
+board:
+	cmd.exe /C "python chArUco_board.py"
 
 main:
 	 cmd.exe /C "python main.py"
