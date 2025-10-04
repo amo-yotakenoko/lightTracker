@@ -23,7 +23,7 @@ def run_marker_tracking_loop(cameras, marker_id_to_color_id):
                 while all_markers_are_color_2(cameras):
                     print("タイミング同期")
                 active_marker_offset=0
-                time.sleep(0.1/2.0)
+                # time.sleep(0.1/4.0)
                 # for cam in cameras:      
                 #     for marker in cam.markers:       
                 #         marker.reset_probability_distribution()
@@ -41,7 +41,7 @@ def run_marker_tracking_loop(cameras, marker_id_to_color_id):
             for cam in cameras:            
                 cam.probability_update()
             print("update")
-            time.sleep(0.1)
+            time.sleep(1)
     finally:
         print("clearing led")
         # led_clear()

@@ -18,21 +18,21 @@ deploy:
 
 # Arduino
 BOARD_FQBN = arduino:avr:uno
-SKETCH_DIR = lightTracker
-AUTOPATTERN_SKETCH_DIR = autoPattern
+SKETCH = lightTracker
+AUTOPATTERN_SKETCH = autopattern
 
 
 .PHONY: upload arduino port autopattern
 
 arduino:
-	@echo "Using port: $(PORT)"
-	cmd.exe /C "arduino-cli compile --fqbn $(BOARD_FQBN) --build-path build-lightTracker $(SKETCH_DIR)"
-	cmd.exe /C "arduino-cli upload -p $(PORT) --fqbn $(BOARD_FQBN) --input-dir build-lightTracker $(SKETCH_DIR)"
+	cmd.exe /C "arduino-cli compile --fqbn $(BOARD_FQBN) --build-path build-lightTracker $(SKETCH)"
+	cmd.exe /C "arduino-cli upload -p $(PORT) --fqbn $(BOARD_FQBN) --input-dir build-lightTracker $(SKETCH)"
 
 autopattern:
 	@echo "Using port: $(PORT)"
-	cmd.exe /C "arduino-cli compile --fqbn $(BOARD_FQBN) --build-path build-autopattern $(AUTOPATTERN_SKETCH_DIR)"
-	cmd.exe /C "arduino-cli upload -p $(PORT) --fqbn $(BOARD_FQBN) --input-dir build-autopattern $(AUTOPATTERN_SKETCH_DIR)"
+	cmd.exe /C "arduino-cli compile --fqbn $(BOARD_FQBN) --build-path build-autopattern $(AUTOPATTERN_SKETCH)"
+	cmd.exe /C "arduino-cli upload -p $(PORT) --fqbn $(BOARD_FQBN) --input-dir build-autopattern $(AUTOPATTERN_SKETCH)"
+
 
 port:
 	 cmd.exe /C "arduino-cli board list"

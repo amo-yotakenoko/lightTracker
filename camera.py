@@ -44,7 +44,7 @@ class Marker:
             # print(self.marker_id_to_color_id,self.marker_color_id,i,self.marker_color_id == self.marker_id_to_color_id[i])
 
             if self.marker_color_id == self.marker_id_to_color_id[i]:
-                now_probability_distribution[i]=1
+                now_probability_distribution[i]=0.2
 
             # 正規化
         now_probability_distribution /= now_probability_distribution.sum()
