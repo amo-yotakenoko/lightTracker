@@ -1,0 +1,311 @@
+[
+  {
+    "added_include_path": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino"
+  },
+  {
+    "added_include_path": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard"
+  },
+  {
+    "compile": {
+      "source_path": "C:\\Users\\taken\\projects\\lightTracker\\build-lightTracker\\sketch\\lightTracker.ino.cpp",
+      "object_path": "C:\\Users\\taken\\projects\\lightTracker\\build-lightTracker\\sketch\\lightTracker.ino.cpp.o",
+      "depfile_path": "C:\\Users\\taken\\projects\\lightTracker\\build-lightTracker\\sketch\\lightTracker.ino.cpp.d"
+    },
+    "compile_task": {
+      "args": [
+        "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7/bin/avr-g++",
+        "-c",
+        "-g",
+        "-Os",
+        "-w",
+        "-std=gnu++11",
+        "-fpermissive",
+        "-fno-exceptions",
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-fno-threadsafe-statics",
+        "-Wno-error=narrowing",
+        "-flto",
+        "-w",
+        "-x",
+        "c++",
+        "-E",
+        "-CC",
+        "-mmcu=atmega328p",
+        "-DF_CPU=16000000L",
+        "-DARDUINO=10607",
+        "-DARDUINO_AVR_UNO",
+        "-DARDUINO_ARCH_AVR",
+        "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
+        "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
+        "C:\\Users\\taken\\projects\\lightTracker\\build-lightTracker\\sketch\\lightTracker.ino.cpp",
+        "-o",
+        "nul"
+      ]
+    }
+  },
+  {
+    "missing_include_h": "Adafruit_NeoPixel.h"
+  },
+  {
+    "added_include_path": "C:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel"
+  },
+  {
+    "compile": {
+      "source_path": "C:\\Users\\taken\\projects\\lightTracker\\build-lightTracker\\sketch\\lightTracker.ino.cpp",
+      "object_path": "C:\\Users\\taken\\projects\\lightTracker\\build-lightTracker\\sketch\\lightTracker.ino.cpp.o",
+      "depfile_path": "C:\\Users\\taken\\projects\\lightTracker\\build-lightTracker\\sketch\\lightTracker.ino.cpp.d"
+    },
+    "compile_task": {
+      "args": [
+        "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7/bin/avr-g++",
+        "-c",
+        "-g",
+        "-Os",
+        "-w",
+        "-std=gnu++11",
+        "-fpermissive",
+        "-fno-exceptions",
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-fno-threadsafe-statics",
+        "-Wno-error=narrowing",
+        "-flto",
+        "-w",
+        "-x",
+        "c++",
+        "-E",
+        "-CC",
+        "-mmcu=atmega328p",
+        "-DF_CPU=16000000L",
+        "-DARDUINO=10607",
+        "-DARDUINO_AVR_UNO",
+        "-DARDUINO_ARCH_AVR",
+        "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
+        "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
+        "-IC:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel",
+        "C:\\Users\\taken\\projects\\lightTracker\\build-lightTracker\\sketch\\lightTracker.ino.cpp",
+        "-o",
+        "nul"
+      ]
+    }
+  },
+  {
+    "missing_include_h": ""
+  },
+  {
+    "compile": {
+      "source_path": "C:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel\\Adafruit_NeoPixel.cpp",
+      "object_path": "C:\\Users\\taken\\projects\\lightTracker\\build-lightTracker\\libraries\\Adafruit_NeoPixel\\Adafruit_NeoPixel.cpp.o",
+      "depfile_path": "C:\\Users\\taken\\projects\\lightTracker\\build-lightTracker\\libraries\\Adafruit_NeoPixel\\Adafruit_NeoPixel.cpp.d"
+    },
+    "compile_task": {
+      "args": [
+        "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7/bin/avr-g++",
+        "-c",
+        "-g",
+        "-Os",
+        "-w",
+        "-std=gnu++11",
+        "-fpermissive",
+        "-fno-exceptions",
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-fno-threadsafe-statics",
+        "-Wno-error=narrowing",
+        "-flto",
+        "-w",
+        "-x",
+        "c++",
+        "-E",
+        "-CC",
+        "-mmcu=atmega328p",
+        "-DF_CPU=16000000L",
+        "-DARDUINO=10607",
+        "-DARDUINO_AVR_UNO",
+        "-DARDUINO_ARCH_AVR",
+        "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
+        "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
+        "-IC:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel",
+        "C:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel\\Adafruit_NeoPixel.cpp",
+        "-o",
+        "nul"
+      ]
+    }
+  },
+  {
+    "missing_include_h": ""
+  },
+  {
+    "compile": {
+      "source_path": "C:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel\\Adafruit_Neopixel_RP2.cpp",
+      "object_path": "C:\\Users\\taken\\projects\\lightTracker\\build-lightTracker\\libraries\\Adafruit_NeoPixel\\Adafruit_Neopixel_RP2.cpp.o",
+      "depfile_path": "C:\\Users\\taken\\projects\\lightTracker\\build-lightTracker\\libraries\\Adafruit_NeoPixel\\Adafruit_Neopixel_RP2.cpp.d"
+    },
+    "compile_task": {
+      "args": [
+        "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7/bin/avr-g++",
+        "-c",
+        "-g",
+        "-Os",
+        "-w",
+        "-std=gnu++11",
+        "-fpermissive",
+        "-fno-exceptions",
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-fno-threadsafe-statics",
+        "-Wno-error=narrowing",
+        "-flto",
+        "-w",
+        "-x",
+        "c++",
+        "-E",
+        "-CC",
+        "-mmcu=atmega328p",
+        "-DF_CPU=16000000L",
+        "-DARDUINO=10607",
+        "-DARDUINO_AVR_UNO",
+        "-DARDUINO_ARCH_AVR",
+        "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
+        "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
+        "-IC:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel",
+        "C:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel\\Adafruit_Neopixel_RP2.cpp",
+        "-o",
+        "nul"
+      ]
+    }
+  },
+  {
+    "missing_include_h": ""
+  },
+  {
+    "compile": {
+      "source_path": "C:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel\\esp.c",
+      "object_path": "C:\\Users\\taken\\projects\\lightTracker\\build-lightTracker\\libraries\\Adafruit_NeoPixel\\esp.c.o",
+      "depfile_path": "C:\\Users\\taken\\projects\\lightTracker\\build-lightTracker\\libraries\\Adafruit_NeoPixel\\esp.c.d"
+    },
+    "compile_task": {
+      "args": [
+        "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7/bin/avr-g++",
+        "-c",
+        "-g",
+        "-Os",
+        "-w",
+        "-std=gnu++11",
+        "-fpermissive",
+        "-fno-exceptions",
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-fno-threadsafe-statics",
+        "-Wno-error=narrowing",
+        "-flto",
+        "-w",
+        "-x",
+        "c++",
+        "-E",
+        "-CC",
+        "-mmcu=atmega328p",
+        "-DF_CPU=16000000L",
+        "-DARDUINO=10607",
+        "-DARDUINO_AVR_UNO",
+        "-DARDUINO_ARCH_AVR",
+        "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
+        "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
+        "-IC:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel",
+        "C:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel\\esp.c",
+        "-o",
+        "nul"
+      ]
+    }
+  },
+  {
+    "missing_include_h": ""
+  },
+  {
+    "compile": {
+      "source_path": "C:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel\\esp8266.c",
+      "object_path": "C:\\Users\\taken\\projects\\lightTracker\\build-lightTracker\\libraries\\Adafruit_NeoPixel\\esp8266.c.o",
+      "depfile_path": "C:\\Users\\taken\\projects\\lightTracker\\build-lightTracker\\libraries\\Adafruit_NeoPixel\\esp8266.c.d"
+    },
+    "compile_task": {
+      "args": [
+        "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7/bin/avr-g++",
+        "-c",
+        "-g",
+        "-Os",
+        "-w",
+        "-std=gnu++11",
+        "-fpermissive",
+        "-fno-exceptions",
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-fno-threadsafe-statics",
+        "-Wno-error=narrowing",
+        "-flto",
+        "-w",
+        "-x",
+        "c++",
+        "-E",
+        "-CC",
+        "-mmcu=atmega328p",
+        "-DF_CPU=16000000L",
+        "-DARDUINO=10607",
+        "-DARDUINO_AVR_UNO",
+        "-DARDUINO_ARCH_AVR",
+        "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
+        "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
+        "-IC:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel",
+        "C:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel\\esp8266.c",
+        "-o",
+        "nul"
+      ]
+    }
+  },
+  {
+    "missing_include_h": ""
+  },
+  {
+    "compile": {
+      "source_path": "C:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel\\kendyte_k210.c",
+      "object_path": "C:\\Users\\taken\\projects\\lightTracker\\build-lightTracker\\libraries\\Adafruit_NeoPixel\\kendyte_k210.c.o",
+      "depfile_path": "C:\\Users\\taken\\projects\\lightTracker\\build-lightTracker\\libraries\\Adafruit_NeoPixel\\kendyte_k210.c.d"
+    },
+    "compile_task": {
+      "args": [
+        "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7/bin/avr-g++",
+        "-c",
+        "-g",
+        "-Os",
+        "-w",
+        "-std=gnu++11",
+        "-fpermissive",
+        "-fno-exceptions",
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-fno-threadsafe-statics",
+        "-Wno-error=narrowing",
+        "-flto",
+        "-w",
+        "-x",
+        "c++",
+        "-E",
+        "-CC",
+        "-mmcu=atmega328p",
+        "-DF_CPU=16000000L",
+        "-DARDUINO=10607",
+        "-DARDUINO_AVR_UNO",
+        "-DARDUINO_ARCH_AVR",
+        "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
+        "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
+        "-IC:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel",
+        "C:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel\\kendyte_k210.c",
+        "-o",
+        "nul"
+      ]
+    }
+  },
+  {
+    "missing_include_h": ""
+  }
+]

@@ -56,8 +56,8 @@ def main():
         # 終了時にすべてのLEDを消灯
         if marker_update.arduino and marker_update.arduino.is_open:
             print("全LEDを消灯します。")
-            marker_update.led_clear()
-            marker_update.led_show()
+            # marker_update.led_clear()
+            # marker_update.led_show()
 
 if __name__ == "__main__":
     main()

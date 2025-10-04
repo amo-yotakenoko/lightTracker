@@ -76,6 +76,9 @@ def main():
     
     caps = [cv2.VideoCapture(i, cv2.CAP_DSHOW) for i in camera_indices]
 
+    for cap in caps:
+        cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, 1) # 自動露出を有効にする
+
     while True:
         frames = []
         for i, cap in enumerate(caps):

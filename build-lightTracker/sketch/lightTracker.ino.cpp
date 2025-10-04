@@ -1,3 +1,5 @@
+#include <Arduino.h>
+#line 1 "C:\\Users\\taken\\projects\\lightTracker\\lightTracker\\lightTracker.ino"
 #include <Adafruit_NeoPixel.h>
 
 #define LED_PIN 6
@@ -5,6 +7,15 @@
 
 Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
 
+#line 8 "C:\\Users\\taken\\projects\\lightTracker\\lightTracker\\lightTracker.ino"
+void setup();
+#line 19 "C:\\Users\\taken\\projects\\lightTracker\\lightTracker\\lightTracker.ino"
+void lightTest();
+#line 52 "C:\\Users\\taken\\projects\\lightTracker\\lightTracker\\lightTracker.ino"
+void clearStrip();
+#line 60 "C:\\Users\\taken\\projects\\lightTracker\\lightTracker\\lightTracker.ino"
+void loop();
+#line 8 "C:\\Users\\taken\\projects\\lightTracker\\lightTracker\\lightTracker.ino"
 void setup()
 {
 
@@ -85,3 +96,4 @@ void loop()
     }
   }
 }
+

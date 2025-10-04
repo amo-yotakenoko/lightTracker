@@ -1,0 +1,9 @@
+{
+  "additionalFiles": "",
+  "compiler.optimization_flags": "",
+  "customBuildProperties": "",
+  "fqbn": "arduino:avr:uno",
+  "hardwareFolders": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages",
+  "otherLibrariesFolders": "C:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries",
+  "sketchLocation": "C:\\Users\\taken\\projects\\lightTracker\\autoPattern"
+}

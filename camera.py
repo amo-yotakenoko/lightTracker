@@ -17,6 +17,10 @@ class Marker:
         self.marker_color_id=-1
         self.marker_id_to_color_id = marker_id_to_color_id
 
+        self.reset_probability_distribution()
+        
+
+    def reset_probability_distribution(self):
         self.probability_distribution=np.array([1/30]*30)
         
 
@@ -31,10 +35,11 @@ class Marker:
         distances = [np.linalg.norm(c - np.array(color)) for c in marker_update.marker_bgrs]
         self.marker_color_id = np.argmin(distances)
 
-
+    
     def now_probability(self):
         
-        now_probability_distribution=np.array([0.01]*30)
+        
+        now_probability_distribution=np.array([0.1]*30)
         for i in range(30):
             # print(self.marker_id_to_color_id,self.marker_color_id,i,self.marker_color_id == self.marker_id_to_color_id[i])
 
@@ -54,7 +59,7 @@ class Marker:
 
     def entropy(self):
         p = self.probability_distribution
-        p = p[p > 0]  # 0の要素を除外
+        # p = p[p > 0]  # 0の要素を除外
         return -np.sum(p * np.log2(p))
     
 
@@ -88,7 +93,7 @@ class Camera:
     def detect_markers(self,name, cap, window_pos):
         id_to_xy = [(0,0)] * 30  # 最大30個のマーカーを想定
         i = 0
-        cap.set(cv2.CAP_PROP_EXPOSURE, -7)  # 負の値が有効な場合もある
+        cap.set(cv2.CAP_PROP_EXPOSURE, -9)  # 負の値が有効な場合もある
         cap.set(cv2.CAP_PROP_GAIN, 0)       # ゲインを抑えるとノイズ減少
         cap.set(cv2.CAP_PROP_BRIGHTNESS, 0) # 明るさ補正を無効に近づける
 
@@ -115,7 +120,7 @@ class Camera:
 
             gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             threshold=100
-            _, threshold_frame = cv2.threshold(gray_frame, 100, 255, cv2.THRESH_BINARY)
+            _, threshold_frame = cv2.threshold(gray_frame, threshold, 255, cv2.THRESH_BINARY)
             contours, _ = cv2.findContours(threshold_frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
             # print(f"{name} {i} フレーム内の輪郭数: {len(contours)}")
             # cv2.drawContours(frame, contours, -1, (0, 100, 0), 2)
