@@ -1,5 +1,9 @@
 from  chArUco_board import *
 
+
+# 5. 出力ファイル名を定義（PDF分割保存用）
+output_basename = "A2_ChArUco_Board"
+
 # 4. 画像をA3サイズ2枚に分割してPDFとして保存
 try:
 
