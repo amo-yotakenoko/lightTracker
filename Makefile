@@ -38,7 +38,7 @@ port:
 	 cmd.exe /C "arduino-cli board list"
 
 board:
-	cmd.exe /C "python chArUco_board.py"
+	cmd.exe /C "python chArUco_output.py"
 
 main:
 	 cmd.exe /C "python main.py"

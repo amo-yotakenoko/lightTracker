@@ -67,6 +67,6 @@ try:
         for t in threadings:
             t.join(0.1)
 except KeyboardInterrupt:
-    # led_clear()
+    led_clear()
     print("\nExiting...")
 

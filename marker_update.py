@@ -4,20 +4,38 @@ import time
 import numpy as np
 from arduino_controller import led_set, led_show, led_clear
 import math
+import arduino_controller
 # RGB順
 marker_bgrs = [np.array([0, 0, 1]), np.array([0, 1, 0]), np.array([1, 0, 0])]
 
 
 def run_marker_tracking_loop(cameras, marker_id_to_color_id):
     active_marker_offset=0
+
+    arduino_controller.initialize()
     # while not all_markers_are_color_2(cameras):
     #     print("タイミング同期待ち")
 
+
+
+
     try:
         while True: 
+            # update_leds_sequentially(active_marker_offset,marker_id_to_color_id)
+            # time.sleep(0.2)
+            if all_markers_are_color_2(cameras):
+                while all_markers_are_color_2(cameras):
+                    print("タイミング同期待ち2")
+                    
+                active_marker_offset=0
+                # time.sleep(0.1)
+                for cam in cameras:      
+                    for marker in cam.markers:       
+                        marker.reset_probability_distribution()
+
+            update_leds_pattern( marker_id_to_color_id,active_marker_offset)
             active_marker_offset+=1
-            update_leds_sequentially(active_marker_offset,marker_id_to_color_id)
-            time.sleep(0.5)
+            
             # # update_leds_min_entropy(marker_id_to_color_id,cameras)
 
 
@@ -25,15 +43,18 @@ def run_marker_tracking_loop(cameras, marker_id_to_color_id):
             #     while all_markers_are_color_2(cameras):
             #         print("タイミング同期")
             #     active_marker_offset=0
-            #     # time.sleep(0.1/4.0)
-            #     for cam in cameras:      
-            #         for marker in cam.markers:       
-            #             marker.reset_probability_distribution()
+
+
+
             # update_leds_pattern( marker_id_to_color_id,active_marker_offset)
             # active_marker_offset+=1
-            # print(active_marker_offset,marker_id_to_color_id)
+            time.sleep(0.4)
+            print(active_marker_offset,marker_id_to_color_id)
             for cam in cameras:            
                 cam.probability_update()
+            time.sleep(0.1)
+            # time.sleep(0.2)
+
             # print("update")
 
 
@@ -189,20 +210,14 @@ def update_leds_min_entropy( marker_id_to_color_id,cameras):
 
 # 固定パターン
 def update_leds_pattern( marker_id_to_color_id,active_marker_offset):
-    # global cycle_begin_timer
-    # period=1000/1000
-
-
-
-
-
-
-    # timer=int((time.time()-cycle_begin_timer)/period)
-    # print(f"{timer=}")
+ 
     for i in range(30):
-        marker_id_to_color_id[i] = (i // int(math.pow(3, (active_marker_offset % 4)))) % 3
-    
+        marker_id_to_color_id[i] = (i // int(math.pow(2, (active_marker_offset % 5)))) % 2
 
-    # for marker_id,rgb in enumerate( marker_id_to_color_id):
-    #     led_set(marker_id,tuple( (np.array(marker_bgrs[marker_id_to_color_id[marker_id]])*100).astype(int) ))
-    # led_show()
+    # for i in range(30):
+    #     marker_id_to_color_id[i] = 0
+    # marker_id_to_color_id[active_marker_offset%30] =1
+
+    for marker_id,rgb in enumerate( marker_id_to_color_id):
+        led_set(marker_id,tuple( (np.array(marker_bgrs[marker_id_to_color_id[marker_id]])*100).astype(int) ))
+    led_show()
