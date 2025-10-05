@@ -3,6 +3,7 @@ import numpy as np
 import sys
 from PIL import Image
 import matplotlib.pyplot as plt
+from scipy.spatial.transform import Rotation
 
 # --- 設定パラメータ ---
 
@@ -116,17 +117,30 @@ if __name__ == "__main__":
 
 
                     # --- matplotlibで3D表示 ---
-                    # 回転ベクトルを回転行列に変換
-                    R, _ = cv2.Rodrigues(rvec)
+                    # ボードを「壁」に見せるための変換
+                    # ボード座標系(B)をワールド座標系(W)に変換するための回転
+                    # Scipyを使用して回転を定義: X軸90度 -> Y軸90度 (extrinsic)
+                    rot = Rotation.from_euler('XYZ', [90, 0,-90], degrees=True)
+                    R_W_B = rot.as_matrix()
 
-                    # カメラ座標系 → ボード座標系 変換
-                    camera_position = -R.T @ tvec
+                    # 1. カメラのポーズをワールド座標系に変換
+                    R_C_B, _ = cv2.Rodrigues(rvec) # Board -> Camera の回転
+                    t_C_B = tvec
+
+                    # カメラ位置 (World座標系)
+                    p_b_cam_origin = -R_C_B.T @ t_C_B
+                    p_w_cam_origin = R_W_B @ p_b_cam_origin
+                    camera_position = p_w_cam_origin
+
+                    # カメラ向き (World座標系)
+                    R_W_C = R_W_B @ R_C_B.T
+                    R = R_W_C # 描画で使う回転行列を更新
 
                     # 3Dプロットをクリア
                     ax.cla()
 
-                    # 原点（ボード中心）をプロット
-                    ax.scatter(0, 0, 0, color='red', label='Board origin')
+                    # ワールド座標系の原点（＝ボードの原点）をプロット
+                    ax.scatter(0, 0, 0, color='black', label='World Origin')
 
                     # カメラ位置をプロット
                     ax.scatter(camera_position[0], camera_position[1], camera_position[2],
@@ -136,41 +150,45 @@ if __name__ == "__main__":
                     if tvecs is not None:
                         for i, tvec_marker in enumerate(tvecs):
                             # マーカー位置をボード座標系に変換
-                            marker_pos_board = R.T @ (tvec_marker.T - tvec)
+                            p_b_marker = R_C_B.T @ (tvec_marker.T - t_C_B)
+                            # マーカー位置をワールド座標系に変換
+                            p_w_marker = R_W_B @ p_b_marker
+                            
                             if i == 0:
-                                ax.scatter(marker_pos_board[0], marker_pos_board[1], marker_pos_board[2],
+                                ax.scatter(p_w_marker[0], p_w_marker[1], p_w_marker[2],
                                            color='orange', marker='x', label='Marker')
                             else:
-                                ax.scatter(marker_pos_board[0], marker_pos_board[1], marker_pos_board[2],
+                                ax.scatter(p_w_marker[0], p_w_marker[1], p_w_marker[2],
                                            color='orange', marker='x')
 
-                    # カメラの向きベクトル（3軸）を描画
+                    # カメラの向きベクトル（3軸）を描画 (World座標系基準)
                     axis_length = 50
+                    # R は R_W_C (Camera -> World の回転)
                     # X軸 (赤)
-                    x_axis_cam = np.array([[axis_length, 0, 0]]).T
-                    x_axis_board = R.T @ x_axis_cam + camera_position
-                    ax.plot([camera_position[0, 0], x_axis_board[0, 0]],
-                            [camera_position[1, 0], x_axis_board[1, 0]],
-                            [camera_position[2, 0], x_axis_board[2, 0]], color='red', label='Cam X')
+                    x_axis_world = R @ np.array([[axis_length, 0, 0]]).T + camera_position
+                    ax.plot([camera_position[0, 0], x_axis_world[0, 0]],
+                            [camera_position[1, 0], x_axis_world[1, 0]],
+                            [camera_position[2, 0], x_axis_world[2, 0]], color='red', label='Cam X')
                     # Y軸 (緑)
-                    y_axis_cam = np.array([[0, axis_length, 0]]).T
-                    y_axis_board = R.T @ y_axis_cam + camera_position
-                    ax.plot([camera_position[0, 0], y_axis_board[0, 0]],
-                            [camera_position[1, 0], y_axis_board[1, 0]],
-                            [camera_position[2, 0], y_axis_board[2, 0]], color='green', label='Cam Y')
+                    y_axis_world = R @ np.array([[0, axis_length, 0]]).T + camera_position
+                    ax.plot([camera_position[0, 0], y_axis_world[0, 0]],
+                            [camera_position[1, 0], y_axis_world[1, 0]],
+                            [camera_position[2, 0], y_axis_world[2, 0]], color='green', label='Cam Y')
                     # Z軸 (青)
-                    z_axis_cam = np.array([[0, 0, axis_length]]).T
-                    z_axis_board = R.T @ z_axis_cam + camera_position
-                    ax.plot([camera_position[0, 0], z_axis_board[0, 0]],
-                            [camera_position[1, 0], z_axis_board[1, 0]],
-                            [camera_position[2, 0], z_axis_board[2, 0]], color='blue', label='Cam Z')
+                    z_axis_world = R @ np.array([[0, 0, axis_length]]).T + camera_position
+                    ax.plot([camera_position[0, 0], z_axis_world[0, 0]],
+                            [camera_position[1, 0], z_axis_world[1, 0]],
+                            [camera_position[2, 0], z_axis_world[2, 0]], color='blue', label='Cam Z')
 
-
+                    ax.set_xlabel("World X (mm)")
+                    ax.set_ylabel("World Y (mm)")
+                    ax.set_zlabel("World Z (mm)")
+                    # ax.legend()
                     # ax.view_init(elev=30, azim=60)
 
                     # 軸の範囲を固定
-                    ax.set_xlim([-200, 200])
-                    ax.set_ylim([-200, 200])
+                    ax.set_xlim([200, -200])
+                    ax.set_ylim([000, 400])
                     ax.set_zlim([0, -400])
                     
                     # 描画を更新
