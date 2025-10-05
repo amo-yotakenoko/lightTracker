@@ -12,7 +12,7 @@ from arduino_controller import led_set, led_show, led_clear
 
 load_dotenv()
 
-# arduino_controller.initialize()
+arduino_controller.initialize()
 
 
 camera_ids=[0]

@@ -44,7 +44,7 @@ class Marker:
             # print(self.marker_id_to_color_id,self.marker_color_id,i,self.marker_color_id == self.marker_id_to_color_id[i])
 
             if self.marker_color_id == self.marker_id_to_color_id[i]:
-                now_probability_distribution[i]=0.2
+                now_probability_distribution[i]=10
 
             # 正規化
         now_probability_distribution /= now_probability_distribution.sum()
@@ -52,6 +52,7 @@ class Marker:
         return now_probability_distribution
 
     def probability_update(self):
+        print("アップdふぇーち")
         
         self.probability_distribution = self.probability_distribution * self.now_probability()
         self.probability_distribution /= self.probability_distribution.sum()
@@ -76,7 +77,7 @@ class Marker:
             # print(f"{self.marker_color_id=} {color=}")
             # cv2.putText(frame, f"{self.marker_color_id}", (int(self.position[0])-5, int(self.position[1])-5), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (255, 255, 255), 1)
             entropy=self.entropy()
-            if(entropy>1):
+            if(entropy>0):
                 cv2.putText(frame, f"{entropy:.3f}bit", (int(self.position[0])+10, int(self.position[1])-5), cv2.FONT_HERSHEY_SIMPLEX, 0.2,color, 1)
             ids = self.estimate_id()
             cv2.putText(frame, f"{ids}", (int(self.position[0])-20, int(self.position[1])-10), cv2.FONT_HERSHEY_SIMPLEX, 0.3,color, 1)

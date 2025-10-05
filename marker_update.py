@@ -10,38 +10,33 @@ marker_bgrs = [np.array([0, 0, 1]), np.array([0, 1, 0]), np.array([1, 0, 0])]
 
 def run_marker_tracking_loop(cameras, marker_id_to_color_id):
     active_marker_offset=0
-    while not all_markers_are_color_2(cameras):
-        print("タイミング同期待ち")
+    # while not all_markers_are_color_2(cameras):
+    #     print("タイミング同期待ち")
 
     try:
         while True: 
-            # update_leds_sequentially(active_marker_offset,marker_id_to_color_id)
+            active_marker_offset+=1
+            update_leds_sequentially(active_marker_offset,marker_id_to_color_id)
+            time.sleep(0.5)
             # # update_leds_min_entropy(marker_id_to_color_id,cameras)
 
 
-            if all_markers_are_color_2(cameras):
-                while all_markers_are_color_2(cameras):
-                    print("タイミング同期")
-                active_marker_offset=0
-                # time.sleep(0.1/4.0)
-                # for cam in cameras:      
-                #     for marker in cam.markers:       
-                #         marker.reset_probability_distribution()
-
-            
-
-            
-
-            update_leds_pattern( marker_id_to_color_id,active_marker_offset)
-            active_marker_offset+=1
-
-            print(active_marker_offset,marker_id_to_color_id)
-
-
+            # if all_markers_are_color_2(cameras):
+            #     while all_markers_are_color_2(cameras):
+            #         print("タイミング同期")
+            #     active_marker_offset=0
+            #     # time.sleep(0.1/4.0)
+            #     for cam in cameras:      
+            #         for marker in cam.markers:       
+            #             marker.reset_probability_distribution()
+            # update_leds_pattern( marker_id_to_color_id,active_marker_offset)
+            # active_marker_offset+=1
+            # print(active_marker_offset,marker_id_to_color_id)
             for cam in cameras:            
                 cam.probability_update()
-            print("update")
-            time.sleep(1)
+            # print("update")
+
+
     finally:
         print("clearing led")
         # led_clear()

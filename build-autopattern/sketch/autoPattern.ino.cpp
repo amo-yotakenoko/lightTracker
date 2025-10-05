@@ -4,7 +4,7 @@
 
 #define LED_PIN 6
 #define LED_COUNT 30
-#define PATTERN_DELAY 1000
+#define PATTERN_DELAY 500
 
 Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
 const uint32_t colors[] = {strip.Color(200, 0, 0), strip.Color(0, 200, 0), strip.Color(0, 0, 255)};
@@ -39,9 +39,9 @@ void loop()
 {
     // setPixelAll(strip.Color(255, 0, 0));
     setPixelAll(colors[2]);
-    delay(PATTERN_DELAY * 2);
+    delay(PATTERN_DELAY * 2 * 3);
     count = 0;
-    for (size_t j = 0; j < pattern_loop * 2; j++)
+    for (size_t j = 0; j < pattern_loop * 10; j++)
     {
 
         for (size_t i = 0; i < LED_COUNT; i++)
