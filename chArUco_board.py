@@ -4,6 +4,7 @@ import sys
 from PIL import Image
 import matplotlib.pyplot as plt
 from scipy.spatial.transform import Rotation
+import matplotlib.patches as patches
 
 # --- 設定パラメータ ---
 
@@ -121,6 +122,7 @@ if __name__ == "__main__":
                     # ボード座標系(B)をワールド座標系(W)に変換するための回転
                     # Scipyを使用して回転を定義: X軸90度 -> Y軸90度 (extrinsic)
                     rot = Rotation.from_euler('XYZ', [90, 0,-90], degrees=True)
+                    #ボードからワールドに
                     R_W_B = rot.as_matrix()
 
                     # 1. カメラのポーズをワールド座標系に変換
@@ -145,6 +147,20 @@ if __name__ == "__main__":
                     # カメラ位置をプロット
                     ax.scatter(camera_position[0], camera_position[1], camera_position[2],
                             color='blue', label='Camera position')
+                    
+                    
+                    x1, y1 = squares_y * square_length_mm, -squares_x * square_length_mm
+                    # 頂点を順に並べる（時計回り）
+                    rect_path = np.array([
+                        [0,0, 0],  # 左下
+                        [x1,0, 0],  # 右下
+                        [x1,0, y1],  # 右上
+                        [0,0, y1],  # 左上
+                        [0,0, 0],  # 左下に戻る（閉じる）
+                    ])
+                    # 線で描画
+                    ax.plot(rect_path[:,0], rect_path[:,1], rect_path[:,2], color='r', linewidth=2)
+
 
                     # --- 個々のマーカーの位置をプロット ---
                     if tvecs is not None:
@@ -160,6 +176,7 @@ if __name__ == "__main__":
                             else:
                                 ax.scatter(p_w_marker[0], p_w_marker[1], p_w_marker[2],
                                            color='orange', marker='x')
+                    
 
                     # カメラの向きベクトル（3軸）を描画 (World座標系基準)
                     axis_length = 50
