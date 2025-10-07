@@ -42,6 +42,43 @@ board = cv2.aruco.CharucoBoard(
 )
 
 
+def draw_uv_line(ax, camera_matrix, uv, camera_position=np.zeros(3)):
+    """
+    カメラから画像上のピクセル uv への線を描画する（3D座標系）
+    
+    Parameters
+    ----------
+    ax : matplotlib 3D axis
+    camera_matrix : np.array shape(3,3) カメラ内部行列
+    uv : tuple (u,v) 画像座標
+    camera_position : np.array shape(3,) カメラ位置（デフォルト原点）
+    length : float 線の長さ（任意スケール）
+    color : str 線の色
+    """
+    u, v = uv
+    fx = camera_matrix[0,0]
+    fy = camera_matrix[1,1]
+    cx = camera_matrix[0,2]
+    cy = camera_matrix[1,2]
+    
+    # 正規化カメラ座標系
+    x_n = (u - cx) / fx
+    y_n = (v - cy) / fy
+    z_n = 1.0
+    
+    # 単位ベクトル
+    direction = np.array([x_n, y_n, z_n])
+    direction /= np.linalg.norm(direction)
+    
+    # 線の終点
+    end_point = camera_position + direction * 100
+    print(camera_position,end_point)
+    # 3D線を描画
+    ax.plot([camera_position[0,0], end_point[0,0]],
+            [camera_position[1,0], end_point[1,0]],
+            [camera_position[2,0], end_point[2,0]])
+
+
 if __name__ == "__main__":
 
     # --- カメラパラメータ（例：仮の値、実際はキャリブレーションで得た値を使う）---
@@ -196,6 +233,18 @@ if __name__ == "__main__":
                     ax.plot([camera_position[0, 0], z_axis_world[0, 0]],
                             [camera_position[1, 0], z_axis_world[1, 0]],
                             [camera_position[2, 0], z_axis_world[2, 0]], color='blue', label='Cam Z')
+                    
+
+                    # 各角を中心からの座標に変更
+                    uv_points = [
+                        (0 , 0 ),
+                        # (0 - cx, 0 - cy),       # 左上
+                        # (0 - cx, height - cy),  # 左下
+                        # (width - cx, 0 - cy),   # 右上
+                        # (width - cx, height - cy) # 右下
+                    ]
+                    for uv in uv_points:
+                        draw_uv_line(ax, camera_matrix, uv, camera_position)
 
                     ax.set_xlabel("World X (mm)")
                     ax.set_ylabel("World Y (mm)")
