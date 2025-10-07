@@ -5,6 +5,7 @@ import numpy as np
 from arduino_controller import led_set, led_show, led_clear
 import math
 import arduino_controller
+import keyboard 
 # RGB順
 marker_bgrs = [np.array([0, 0, 1]), np.array([0, 1, 0]), np.array([1, 0, 0])]
 
@@ -17,24 +18,74 @@ def run_marker_tracking_loop(cameras, marker_id_to_color_id):
     #     print("タイミング同期待ち")
 
 
-
+    now_sync_flg = False
+    sync_start_time = None
+    sync_end_time = time.time()
+    sync_span_time = None
+    signal_start_time = None
+    signal_count = 0
 
     try:
-        while True: 
-            # update_leds_sequentially(active_marker_offset,marker_id_to_color_id)
-            # time.sleep(0.2)
-            if all_markers_are_color_2(cameras):
-                while all_markers_are_color_2(cameras):
-                    print("タイミング同期待ち2")
-                    
-                active_marker_offset=0
-                # time.sleep(0.1)
-                for cam in cameras:      
-                    for marker in cam.markers:       
+        while True:
+            time.sleep(0.00001)
+            is_sync = all_markers_are_color_2(cameras)
+
+            # --- sync開始 ---
+            if not now_sync_flg and is_sync:
+                now_sync_flg = True
+                if sync_end_time is not None:
+                    sync_span_time = time.time() - sync_end_time  # 前回終了からの周期
+                    sync_start_time = time.time()
+                    print(f"{sync_span_time=}")
+
+            # --- sync終了 ---
+            if now_sync_flg and not is_sync:
+                now_sync_flg = False
+                sync_end_time = time.time()
+                signal_start_time = time.time()
+                signal_count = 0
+
+            if keyboard.is_pressed('a'):
+                for cam in cameras:
+                    for marker in cam.markers:
                         marker.reset_probability_distribution()
 
-            update_leds_pattern( marker_id_to_color_id,active_marker_offset)
-            active_marker_offset+=1
+            # --- sync周期が確定している場合のみ処理 ---
+            if sync_span_time is not None and signal_start_time is not None:
+                signal_time = time.time() - signal_start_time
+
+                # signal_count のタイミング判定
+                if sync_span_time / 30 * (signal_count) <= signal_time:
+                    signal_count += 1
+                    print(f"{signal_count=}")
+                    # update_leds_sequentially(signal_count-1, marker_id_to_color_id)
+                    update_leds_pattern( marker_id_to_color_id,signal_count+1)
+
+                    for cam in cameras:
+                        cam.probability_update()
+
+
+
+
+
+               
+                
+
+
+            # update_leds_sequentially(active_marker_offset,marker_id_to_color_id)
+            # time.sleep(0.2)
+            # if all_markers_are_color_2(cameras):
+            #     while all_markers_are_color_2(cameras):
+            #         print("タイミング同期待ち2")
+                    
+            #     active_marker_offset=0
+            #     # time.sleep(0.1)
+            #     for cam in cameras:      
+            #         for marker in cam.markers:       
+            #             marker.reset_probability_distribution()
+
+            # update_leds_pattern( marker_id_to_color_id,active_marker_offset)
+            # active_marker_offset+=1
             
             # # update_leds_min_entropy(marker_id_to_color_id,cameras)
 
@@ -48,11 +99,11 @@ def run_marker_tracking_loop(cameras, marker_id_to_color_id):
 
             # update_leds_pattern( marker_id_to_color_id,active_marker_offset)
             # active_marker_offset+=1
-            time.sleep(0.4)
-            print(active_marker_offset,marker_id_to_color_id)
-            for cam in cameras:            
-                cam.probability_update()
-            time.sleep(0.1)
+            # time.sleep(0.4)
+            # print(active_marker_offset,marker_id_to_color_id)
+            # for cam in cameras:            
+            #     cam.probability_update()
+            # time.sleep(0.1)
             # time.sleep(0.2)
 
             # print("update")
@@ -63,11 +114,14 @@ def run_marker_tracking_loop(cameras, marker_id_to_color_id):
         # led_clear()
 
 def all_markers_are_color_2(cameras):
-    return  (
-                bool(cameras) and
-                all(cam.markers for cam in cameras) and
-                all(marker.marker_color_id == 2 for cam in cameras for marker in cam.markers)
-            )
+    if not cameras or not all(cam.markers for cam in cameras):
+        return False
+
+    markers = [marker for cam in cameras for marker in cam.markers]
+    total = len(markers)
+    count_color2 = sum(marker.marker_color_id == 2 for marker in markers)
+
+    return count_color2 >= total / 2
 
 
 
@@ -170,11 +224,11 @@ def update_leds_sequentially(active_marker_offset, marker_id_to_color_id):
         marker_id_to_color_id[i] = 0
     marker_id_to_color_id[active_marker_offset%30] =1
 
-    for marker_id,rgb in enumerate( marker_id_to_color_id):
+    # for marker_id,rgb in enumerate( marker_id_to_color_id):
 
-        led_set(marker_id,tuple( (np.array(marker_bgrs[marker_id_to_color_id[marker_id]])*100).astype(int) ))
+    #     led_set(marker_id,tuple( (np.array(marker_bgrs[marker_id_to_color_id[marker_id]])*100).astype(int) ))
 
-    led_show()
+    # led_show()
 
 # 最小エントロピーを目指す
 def update_leds_min_entropy( marker_id_to_color_id,cameras):
@@ -218,6 +272,6 @@ def update_leds_pattern( marker_id_to_color_id,active_marker_offset):
     #     marker_id_to_color_id[i] = 0
     # marker_id_to_color_id[active_marker_offset%30] =1
 
-    for marker_id,rgb in enumerate( marker_id_to_color_id):
-        led_set(marker_id,tuple( (np.array(marker_bgrs[marker_id_to_color_id[marker_id]])*100).astype(int) ))
-    led_show()
+    # for marker_id,rgb in enumerate( marker_id_to_color_id):
+    #     led_set(marker_id,tuple( (np.array(marker_bgrs[marker_id_to_color_id[marker_id]])*100).astype(int) ))
+    # led_show()

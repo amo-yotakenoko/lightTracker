@@ -33,68 +33,6 @@
  {
   "directory": "C:\\Users\\taken\\projects\\lightTracker",
   "arguments": [
-   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7/bin/avr-g++",
-   "-c",
-   "-g",
-   "-Os",
-   "-w",
-   "-std=gnu++11",
-   "-fpermissive",
-   "-fno-exceptions",
-   "-ffunction-sections",
-   "-fdata-sections",
-   "-fno-threadsafe-statics",
-   "-Wno-error=narrowing",
-   "-MMD",
-   "-flto",
-   "-mmcu=atmega328p",
-   "-DF_CPU=16000000L",
-   "-DARDUINO=10607",
-   "-DARDUINO_AVR_UNO",
-   "-DARDUINO_ARCH_AVR",
-   "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
-   "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
-   "-IC:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel",
-   "C:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel\\Adafruit_Neopixel_RP2.cpp",
-   "-o",
-   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\libraries\\Adafruit_NeoPixel\\Adafruit_Neopixel_RP2.cpp.o"
-  ],
-  "file": "C:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel\\Adafruit_Neopixel_RP2.cpp"
- },
- {
-  "directory": "C:\\Users\\taken\\projects\\lightTracker",
-  "arguments": [
-   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7/bin/avr-g++",
-   "-c",
-   "-g",
-   "-Os",
-   "-w",
-   "-std=gnu++11",
-   "-fpermissive",
-   "-fno-exceptions",
-   "-ffunction-sections",
-   "-fdata-sections",
-   "-fno-threadsafe-statics",
-   "-Wno-error=narrowing",
-   "-MMD",
-   "-flto",
-   "-mmcu=atmega328p",
-   "-DF_CPU=16000000L",
-   "-DARDUINO=10607",
-   "-DARDUINO_AVR_UNO",
-   "-DARDUINO_ARCH_AVR",
-   "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
-   "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
-   "-IC:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel",
-   "C:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel\\Adafruit_NeoPixel.cpp",
-   "-o",
-   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\libraries\\Adafruit_NeoPixel\\Adafruit_NeoPixel.cpp.o"
-  ],
-  "file": "C:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel\\Adafruit_NeoPixel.cpp"
- },
- {
-  "directory": "C:\\Users\\taken\\projects\\lightTracker",
-  "arguments": [
    "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7/bin/avr-gcc",
    "-c",
    "-g",
@@ -151,6 +89,37 @@
  {
   "directory": "C:\\Users\\taken\\projects\\lightTracker",
   "arguments": [
+   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7/bin/avr-g++",
+   "-c",
+   "-g",
+   "-Os",
+   "-w",
+   "-std=gnu++11",
+   "-fpermissive",
+   "-fno-exceptions",
+   "-ffunction-sections",
+   "-fdata-sections",
+   "-fno-threadsafe-statics",
+   "-Wno-error=narrowing",
+   "-MMD",
+   "-flto",
+   "-mmcu=atmega328p",
+   "-DF_CPU=16000000L",
+   "-DARDUINO=10607",
+   "-DARDUINO_AVR_UNO",
+   "-DARDUINO_ARCH_AVR",
+   "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
+   "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
+   "-IC:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel",
+   "C:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel\\Adafruit_Neopixel_RP2.cpp",
+   "-o",
+   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\libraries\\Adafruit_NeoPixel\\Adafruit_Neopixel_RP2.cpp.o"
+  ],
+  "file": "C:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel\\Adafruit_Neopixel_RP2.cpp"
+ },
+ {
+  "directory": "C:\\Users\\taken\\projects\\lightTracker",
+  "arguments": [
    "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7/bin/avr-gcc",
    "-c",
    "-g",
@@ -200,11 +169,12 @@
    "-DARDUINO_ARCH_AVR",
    "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
    "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
-   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\WString.cpp",
+   "-IC:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel",
+   "C:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel\\Adafruit_NeoPixel.cpp",
    "-o",
-   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\core\\WString.cpp.o"
+   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\libraries\\Adafruit_NeoPixel\\Adafruit_NeoPixel.cpp.o"
   ],
-  "file": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\WString.cpp"
+  "file": "C:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel\\Adafruit_NeoPixel.cpp"
  },
  {
   "directory": "C:\\Users\\taken\\projects\\lightTracker",
@@ -320,11 +290,11 @@
    "-DARDUINO_ARCH_AVR",
    "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
    "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
-   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\HardwareSerial1.cpp",
+   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\USBCore.cpp",
    "-o",
-   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\core\\HardwareSerial1.cpp.o"
+   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\core\\USBCore.cpp.o"
   ],
-  "file": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\HardwareSerial1.cpp"
+  "file": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\USBCore.cpp"
  },
  {
   "directory": "C:\\Users\\taken\\projects\\lightTracker",
@@ -350,11 +320,11 @@
    "-DARDUINO_ARCH_AVR",
    "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
    "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
-   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\Tone.cpp",
+   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\Stream.cpp",
    "-o",
-   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\core\\Tone.cpp.o"
+   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\core\\Stream.cpp.o"
   ],
-  "file": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\Tone.cpp"
+  "file": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\Stream.cpp"
  },
  {
   "directory": "C:\\Users\\taken\\projects\\lightTracker",
@@ -386,6 +356,36 @@
  {
   "directory": "C:\\Users\\taken\\projects\\lightTracker",
   "arguments": [
+   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7/bin/avr-g++",
+   "-c",
+   "-g",
+   "-Os",
+   "-w",
+   "-std=gnu++11",
+   "-fpermissive",
+   "-fno-exceptions",
+   "-ffunction-sections",
+   "-fdata-sections",
+   "-fno-threadsafe-statics",
+   "-Wno-error=narrowing",
+   "-MMD",
+   "-flto",
+   "-mmcu=atmega328p",
+   "-DF_CPU=16000000L",
+   "-DARDUINO=10607",
+   "-DARDUINO_AVR_UNO",
+   "-DARDUINO_ARCH_AVR",
+   "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
+   "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
+   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\WString.cpp",
+   "-o",
+   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\core\\WString.cpp.o"
+  ],
+  "file": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\WString.cpp"
+ },
+ {
+  "directory": "C:\\Users\\taken\\projects\\lightTracker",
+  "arguments": [
    "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7/bin/avr-gcc",
    "-c",
    "-g",
@@ -409,96 +409,6 @@
    "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\core\\hooks.c.o"
   ],
   "file": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\hooks.c"
- },
- {
-  "directory": "C:\\Users\\taken\\projects\\lightTracker",
-  "arguments": [
-   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7/bin/avr-g++",
-   "-c",
-   "-g",
-   "-Os",
-   "-w",
-   "-std=gnu++11",
-   "-fpermissive",
-   "-fno-exceptions",
-   "-ffunction-sections",
-   "-fdata-sections",
-   "-fno-threadsafe-statics",
-   "-Wno-error=narrowing",
-   "-MMD",
-   "-flto",
-   "-mmcu=atmega328p",
-   "-DF_CPU=16000000L",
-   "-DARDUINO=10607",
-   "-DARDUINO_AVR_UNO",
-   "-DARDUINO_ARCH_AVR",
-   "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
-   "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
-   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\HardwareSerial0.cpp",
-   "-o",
-   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\core\\HardwareSerial0.cpp.o"
-  ],
-  "file": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\HardwareSerial0.cpp"
- },
- {
-  "directory": "C:\\Users\\taken\\projects\\lightTracker",
-  "arguments": [
-   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7/bin/avr-g++",
-   "-c",
-   "-g",
-   "-Os",
-   "-w",
-   "-std=gnu++11",
-   "-fpermissive",
-   "-fno-exceptions",
-   "-ffunction-sections",
-   "-fdata-sections",
-   "-fno-threadsafe-statics",
-   "-Wno-error=narrowing",
-   "-MMD",
-   "-flto",
-   "-mmcu=atmega328p",
-   "-DF_CPU=16000000L",
-   "-DARDUINO=10607",
-   "-DARDUINO_AVR_UNO",
-   "-DARDUINO_ARCH_AVR",
-   "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
-   "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
-   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\HardwareSerial3.cpp",
-   "-o",
-   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\core\\HardwareSerial3.cpp.o"
-  ],
-  "file": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\HardwareSerial3.cpp"
- },
- {
-  "directory": "C:\\Users\\taken\\projects\\lightTracker",
-  "arguments": [
-   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7/bin/avr-g++",
-   "-c",
-   "-g",
-   "-Os",
-   "-w",
-   "-std=gnu++11",
-   "-fpermissive",
-   "-fno-exceptions",
-   "-ffunction-sections",
-   "-fdata-sections",
-   "-fno-threadsafe-statics",
-   "-Wno-error=narrowing",
-   "-MMD",
-   "-flto",
-   "-mmcu=atmega328p",
-   "-DF_CPU=16000000L",
-   "-DARDUINO=10607",
-   "-DARDUINO_AVR_UNO",
-   "-DARDUINO_ARCH_AVR",
-   "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
-   "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
-   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\Print.cpp",
-   "-o",
-   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\core\\Print.cpp.o"
-  ],
-  "file": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\Print.cpp"
  },
  {
   "directory": "C:\\Users\\taken\\projects\\lightTracker",
@@ -554,11 +464,11 @@
    "-DARDUINO_ARCH_AVR",
    "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
    "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
-   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\HardwareSerial2.cpp",
+   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\HardwareSerial.cpp",
    "-o",
-   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\core\\HardwareSerial2.cpp.o"
+   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\core\\HardwareSerial.cpp.o"
   ],
-  "file": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\HardwareSerial2.cpp"
+  "file": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\HardwareSerial.cpp"
  },
  {
   "directory": "C:\\Users\\taken\\projects\\lightTracker",
@@ -584,11 +494,11 @@
    "-DARDUINO_ARCH_AVR",
    "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
    "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
-   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\Stream.cpp",
+   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\HardwareSerial0.cpp",
    "-o",
-   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\core\\Stream.cpp.o"
+   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\core\\HardwareSerial0.cpp.o"
   ],
-  "file": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\Stream.cpp"
+  "file": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\HardwareSerial0.cpp"
  },
  {
   "directory": "C:\\Users\\taken\\projects\\lightTracker",
@@ -614,11 +524,11 @@
    "-DARDUINO_ARCH_AVR",
    "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
    "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
-   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\USBCore.cpp",
+   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\Print.cpp",
    "-o",
-   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\core\\USBCore.cpp.o"
+   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\core\\Print.cpp.o"
   ],
-  "file": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\USBCore.cpp"
+  "file": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\Print.cpp"
  },
  {
   "directory": "C:\\Users\\taken\\projects\\lightTracker",
@@ -674,11 +584,71 @@
    "-DARDUINO_ARCH_AVR",
    "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
    "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
-   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\HardwareSerial.cpp",
+   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\HardwareSerial2.cpp",
    "-o",
-   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\core\\HardwareSerial.cpp.o"
+   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\core\\HardwareSerial2.cpp.o"
   ],
-  "file": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\HardwareSerial.cpp"
+  "file": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\HardwareSerial2.cpp"
+ },
+ {
+  "directory": "C:\\Users\\taken\\projects\\lightTracker",
+  "arguments": [
+   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7/bin/avr-g++",
+   "-c",
+   "-g",
+   "-Os",
+   "-w",
+   "-std=gnu++11",
+   "-fpermissive",
+   "-fno-exceptions",
+   "-ffunction-sections",
+   "-fdata-sections",
+   "-fno-threadsafe-statics",
+   "-Wno-error=narrowing",
+   "-MMD",
+   "-flto",
+   "-mmcu=atmega328p",
+   "-DF_CPU=16000000L",
+   "-DARDUINO=10607",
+   "-DARDUINO_AVR_UNO",
+   "-DARDUINO_ARCH_AVR",
+   "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
+   "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
+   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\HardwareSerial3.cpp",
+   "-o",
+   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\core\\HardwareSerial3.cpp.o"
+  ],
+  "file": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\HardwareSerial3.cpp"
+ },
+ {
+  "directory": "C:\\Users\\taken\\projects\\lightTracker",
+  "arguments": [
+   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7/bin/avr-g++",
+   "-c",
+   "-g",
+   "-Os",
+   "-w",
+   "-std=gnu++11",
+   "-fpermissive",
+   "-fno-exceptions",
+   "-ffunction-sections",
+   "-fdata-sections",
+   "-fno-threadsafe-statics",
+   "-Wno-error=narrowing",
+   "-MMD",
+   "-flto",
+   "-mmcu=atmega328p",
+   "-DF_CPU=16000000L",
+   "-DARDUINO=10607",
+   "-DARDUINO_AVR_UNO",
+   "-DARDUINO_ARCH_AVR",
+   "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
+   "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
+   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\Tone.cpp",
+   "-o",
+   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\core\\Tone.cpp.o"
+  ],
+  "file": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\Tone.cpp"
  },
  {
   "directory": "C:\\Users\\taken\\projects\\lightTracker",
@@ -734,11 +704,11 @@
    "-DARDUINO_ARCH_AVR",
    "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
    "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
-   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\new.cpp",
+   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\HardwareSerial1.cpp",
    "-o",
-   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\core\\new.cpp.o"
+   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\core\\HardwareSerial1.cpp.o"
   ],
-  "file": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\new.cpp"
+  "file": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\HardwareSerial1.cpp"
  },
  {
   "directory": "C:\\Users\\taken\\projects\\lightTracker",
@@ -770,17 +740,20 @@
  {
   "directory": "C:\\Users\\taken\\projects\\lightTracker",
   "arguments": [
-   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7/bin/avr-gcc",
+   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7/bin/avr-g++",
    "-c",
    "-g",
    "-Os",
    "-w",
-   "-std=gnu11",
+   "-std=gnu++11",
+   "-fpermissive",
+   "-fno-exceptions",
    "-ffunction-sections",
    "-fdata-sections",
+   "-fno-threadsafe-statics",
+   "-Wno-error=narrowing",
    "-MMD",
    "-flto",
-   "-fno-fat-lto-objects",
    "-mmcu=atmega328p",
    "-DF_CPU=16000000L",
    "-DARDUINO=10607",
@@ -788,11 +761,11 @@
    "-DARDUINO_ARCH_AVR",
    "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
    "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
-   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\wiring_analog.c",
+   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\new.cpp",
    "-o",
-   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\core\\wiring_analog.c.o"
+   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\core\\new.cpp.o"
   ],
-  "file": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\wiring_analog.c"
+  "file": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\new.cpp"
  },
  {
   "directory": "C:\\Users\\taken\\projects\\lightTracker",
@@ -843,6 +816,33 @@
    "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\core\\wiring_pulse.S.o"
   ],
   "file": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\wiring_pulse.S"
+ },
+ {
+  "directory": "C:\\Users\\taken\\projects\\lightTracker",
+  "arguments": [
+   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7/bin/avr-gcc",
+   "-c",
+   "-g",
+   "-Os",
+   "-w",
+   "-std=gnu11",
+   "-ffunction-sections",
+   "-fdata-sections",
+   "-MMD",
+   "-flto",
+   "-fno-fat-lto-objects",
+   "-mmcu=atmega328p",
+   "-DF_CPU=16000000L",
+   "-DARDUINO=10607",
+   "-DARDUINO_AVR_UNO",
+   "-DARDUINO_ARCH_AVR",
+   "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
+   "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
+   "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\wiring_analog.c",
+   "-o",
+   "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\core\\wiring_analog.c.o"
+  ],
+  "file": "C:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino\\wiring_analog.c"
  },
  {
   "directory": "C:\\Users\\taken\\projects\\lightTracker",

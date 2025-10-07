@@ -24,6 +24,8 @@ class Camera:
         cv2.namedWindow(name)
         cv2.moveWindow(name, window_pos[0], window_pos[1])
 
+
+
         while True:
 
 
