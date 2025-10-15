@@ -1,5 +1,21 @@
 {
     "editor.tabSize": 4,
     "editor.insertSpaces": true,
-    "editor.detectIndentation": false
+    "editor.detectIndentation": false,
+
+    // C/C++ (Arduino) の設定
+    "C_Cpp.intelliSenseEngine": "default",
+    "arduino.path": "C:/Program Files (x86)/Arduino", // ご自身のArduino IDEのパスに合わせて変更してください
+    "arduino.commandPath": "arduino_debug.exe", // 上記パスに合わせて変更してください
+    "arduino.defaultBaudRate": 115200,
+
+    // Python の設定
+    "python.analysis.autoSearchPaths": true,
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}"
+    ],
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.autopep8",
+        "editor.formatOnSave": true
+    }
 }

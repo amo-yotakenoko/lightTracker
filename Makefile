@@ -20,9 +20,10 @@ deploy:
 BOARD_FQBN = arduino:avr:uno
 SKETCH = lightTracker
 AUTOPATTERN_SKETCH = autopattern
+AUTOPATTERN_2_SKETCH = autopattern_v2
 
 
-.PHONY: upload arduino port autopattern
+.PHONY: upload arduino port autopattern autopattern
 
 arduino:
 	cmd.exe /C "arduino-cli compile --fqbn $(BOARD_FQBN) --build-path build-lightTracker $(SKETCH)"
@@ -32,6 +33,12 @@ autopattern:
 	@echo "Using port: $(PORT)"
 	cmd.exe /C "arduino-cli compile --fqbn $(BOARD_FQBN) --build-path build-autopattern $(AUTOPATTERN_SKETCH)"
 	cmd.exe /C "arduino-cli upload -p $(PORT) --fqbn $(BOARD_FQBN) --input-dir build-autopattern $(AUTOPATTERN_SKETCH)"
+
+autopattern2:
+	@echo "Using port: $(PORT)"
+	cmd.exe /C python define_sign.py
+	cmd.exe /C "arduino-cli compile --fqbn $(BOARD_FQBN) --build-path build-autopattern $(AUTOPATTERN_2_SKETCH)"
+	cmd.exe /C "arduino-cli upload -p $(PORT) --fqbn $(BOARD_FQBN) --input-dir build-autopattern $(AUTOPATTERN_2_SKETCH)"
 
 
 port:

@@ -50,9 +50,9 @@ for idx, camera_id in enumerate(camera_ids):
 
 
 # マーカー更新ループのスレッドを追加
-threadings.append(threading.Thread(target=marker_update.run_marker_tracking_loop, 
-                                  daemon=True,
-                                  args=(cameras, marker_id_to_color_id)))
+# threadings.append(threading.Thread(target=marker_update.run_marker_tracking_loop, 
+#                                   daemon=True,
+#                                   args=(cameras, marker_id_to_color_id)))
 
 
 for t in threadings:

@@ -7,9 +7,9 @@
   },
   {
     "compile": {
-      "source_path": "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\sketch\\autoPattern.ino.cpp",
-      "object_path": "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\sketch\\autoPattern.ino.cpp.o",
-      "depfile_path": "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\sketch\\autoPattern.ino.cpp.d"
+      "source_path": "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\sketch\\autoPattern_v2.ino.cpp",
+      "object_path": "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\sketch\\autoPattern_v2.ino.cpp.o",
+      "depfile_path": "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\sketch\\autoPattern_v2.ino.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -38,7 +38,7 @@
         "-DARDUINO_ARCH_AVR",
         "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
         "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
-        "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\sketch\\autoPattern.ino.cpp",
+        "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\sketch\\autoPattern_v2.ino.cpp",
         "-o",
         "nul"
       ]
@@ -52,9 +52,9 @@
   },
   {
     "compile": {
-      "source_path": "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\sketch\\autoPattern.ino.cpp",
-      "object_path": "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\sketch\\autoPattern.ino.cpp.o",
-      "depfile_path": "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\sketch\\autoPattern.ino.cpp.d"
+      "source_path": "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\sketch\\autoPattern_v2.ino.cpp",
+      "object_path": "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\sketch\\autoPattern_v2.ino.cpp.o",
+      "depfile_path": "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\sketch\\autoPattern_v2.ino.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -84,7 +84,7 @@
         "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
         "-IC:\\Users\\taken\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
         "-IC:\\Users\\taken\\OneDrive\\ドキュメント\\Arduino\\libraries\\Adafruit_NeoPixel",
-        "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\sketch\\autoPattern.ino.cpp",
+        "C:\\Users\\taken\\projects\\lightTracker\\build-autopattern\\sketch\\autoPattern_v2.ino.cpp",
         "-o",
         "nul"
       ]
