@@ -12,6 +12,7 @@ class Camera:
     def __init__(self, marker_id_to_color_id):
         self.marker_id_to_color_id = marker_id_to_color_id
         self.markers = []
+        self.frame = None
 
     def detect_markers(self,name, cap, window_pos):
         id_to_xy = [(0,0)] * 30  # 最大30個のマーカーを想定
@@ -34,6 +35,7 @@ class Camera:
 
 
             ret, frame = cap.read()
+            self.frame = frame
             if not ret:
                 print("カメラ読み取り失敗")
                 continue
