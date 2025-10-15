@@ -9,10 +9,11 @@ from dotenv import load_dotenv
 import os
 import arduino_controller
 from arduino_controller import led_set, led_show, led_clear
-
+import settings
 load_dotenv()
 
-arduino_controller.initialize()
+if settings.mode=="serialSync":
+    arduino_controller.initialize()
 
 
 camera_ids=[0]
@@ -48,11 +49,11 @@ for idx, camera_id in enumerate(camera_ids):
                    cap,
                    (x,y),)))
 
-
-# マーカー更新ループのスレッドを追加
-# threadings.append(threading.Thread(target=marker_update.run_marker_tracking_loop, 
-#                                   daemon=True,
-#                                   args=(cameras, marker_id_to_color_id)))
+if settings.mode=="serialSync":
+    # マーカー更新ループのスレッドを追加
+    threadings.append(threading.Thread(target=marker_update.run_marker_tracking_loop, 
+                                    daemon=True,
+                                    args=(cameras, marker_id_to_color_id)))
 
 
 for t in threadings:

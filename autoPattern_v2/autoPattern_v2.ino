@@ -6,10 +6,11 @@
 
 #define use_color 2
 #define pattern_loop 5
-#define PATTERN_DELAY 500
+#define PATTERN_DELAY 300
 
 Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
-const uint32_t colors[] = {strip.Color(10, 0, 0), strip.Color(0, 10, 0), strip.Color(0, 0, 10)};
+int lightPower = 255;
+const uint32_t colors[] = {strip.Color(lightPower, 0, 0), strip.Color(0, lightPower, 0), strip.Color(0, 0, lightPower)};
 
 const uint8_t lightPattern[LIGHT_PATTERN_LENGTH][LIGHT_PATTERN_TIME_LENGTH] = LIGHT_PATTERN;
 
@@ -45,7 +46,7 @@ void loop()
             // strip.setPixelColor(i, (count % 30) == i ? colors[1] : colors[0]);
         }
         strip.show();
-        delay(1000);
+        delay(PATTERN_DELAY);
         t++;
     }
 }

@@ -2,6 +2,8 @@ import numpy as np
 import cv2
 import marker_update
 import threading
+import settings
+import define_sign
 
 class Marker:
 
@@ -13,6 +15,8 @@ class Marker:
         self.color=None
         self.marker_color_id=-1
         self.marker_id_to_color_id = marker_id_to_color_id
+
+        self.pattern_history=[-1]*define_sign.length
 
         self.reset_probability_distribution()
         
@@ -33,6 +37,30 @@ class Marker:
         with self._lock:
             distances = [np.linalg.norm(c - np.array(color)) for c in marker_update.marker_bgrs]
             self.marker_color_id = np.argmin(distances)
+
+
+        if settings.mode=="autoPattern":
+            # self.reset_probability_distribution()
+            if(self.pattern_history[-1]!=self.marker_color_id ):
+                self.pattern_history.append(self.marker_color_id)
+
+                # candiate_id=[]
+                # print(self.pattern_history[-define_sign.length:])
+                for id in range(len(define_sign.light_pattern)):
+                    pattern_list=define_sign.light_pattern[id]
+                    detected_pattern=self.pattern_history[-define_sign.length:]
+                    # print(f"{pattern_list=}\n{ detected_pattern=}\n{define_sign.rotate_match( pattern_list,detected_pattern)}\n---------")
+                    match_reliability= define_sign.rotate_match( pattern_list,detected_pattern)
+                    if(match_reliability>0):
+                        # candiate_id.append(id)
+
+                        if 0 <= id < len(self.probability_distribution):
+                            self.probability_distribution[id] += match_reliability
+
+            # 正規化
+            self.probability_distribution /= self.probability_distribution.sum()
+
+               
 
     
     def now_probability(self):
@@ -70,9 +98,12 @@ class Marker:
     
 
     def estimate_id(self):
+        # if settings.mode=="serialSync":
         max_val = self.probability_distribution.max()
         max_indices = np.where(self.probability_distribution == max_val)[0]
         return max_indices.tolist()
+        # if settings.mode=="autoPattern":
+
 
 
     def draw_info(self, frame):
@@ -82,6 +113,7 @@ class Marker:
             # print(f"{self.marker_color_id=} {color=}")
             # cv2.putText(frame, f"{self.marker_color_id}", (int(self.position[0])-5, int(self.position[1])-5), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (255, 255, 255), 1)
             entropy=self.entropy()
+            
             if(entropy>0):
                 cv2.putText(frame, f"{entropy:.3f}bit", (int(self.position[0])+10, int(self.position[1])-5), cv2.FONT_HERSHEY_SIMPLEX, 0.2,color, 1)
             ids = self.estimate_id()

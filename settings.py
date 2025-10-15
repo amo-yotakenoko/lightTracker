@@ -1,0 +1,7 @@
+
+
+mode="autoPattern"
+
+
+
+# mode="serialSync"

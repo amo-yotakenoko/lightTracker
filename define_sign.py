@@ -17,7 +17,29 @@ def rotate_tuple(t, n):
     rotated = t[n:] + t[:n]
     return rotated
 
-def is_rotate_duplication(pattern,confirmed_patterns):
+def rotate_match(pattern1, pattern2):
+    for i in range(len(pattern1)):
+        reliability=0
+        rotated1= rotate_tuple(pattern1, i)
+        is_match=True
+        for j in range(len(pattern1)):
+            wildcard=rotated1[j]==-1 or pattern2[j]==-1
+
+            if(not wildcard):
+                 reliability+=1
+
+            if (not wildcard and rotated1[j]!=pattern2[j]):
+                is_match=False
+                break
+        if(is_match==True):
+            return reliability
+    return 0
+
+
+
+
+
+def rotate_duplicate(pattern,confirmed_patterns):
 
     for i in range(len(pattern)):
         rotated= rotate_tuple(pattern, i)
@@ -31,31 +53,29 @@ def is_rotate_duplication(pattern,confirmed_patterns):
 
 
 def get_pattern():
+
     global elements ,length
     confirmed_patterns=[]
-    for pattern in itertools.product(elements, repeat=length):
-
+    for pattern_tuple in itertools.product(elements, repeat=length):
+        pattern=list( pattern_tuple)
         if has_repeated_sign(pattern):
             continue
-        if is_rotate_duplication(pattern,confirmed_patterns):
+        if rotate_duplicate(pattern,confirmed_patterns):
             continue
         # print(pattern)
         confirmed_patterns.append(pattern)
+
     return confirmed_patterns
 
 
-
-
-
-
-
 # print(str(confirmed_patterns).replace("(","{"))
-
+print("get_pattern()")
+light_pattern=get_pattern()
+print(f"{light_pattern=}")
 
 
 if __name__ == "__main__":
-    confirmed_patterns=get_pattern()
-    define_pattern=str(confirmed_patterns)
+    define_pattern=str(light_pattern)
     define_pattern=define_pattern.replace("(","{")
     define_pattern=define_pattern.replace(")","}")
     define_pattern=define_pattern.replace("[","{")
@@ -65,7 +85,7 @@ if __name__ == "__main__":
 
     with open("autoPattern_v2\signPattern.h", "w", encoding="utf-8") as f:
         f.write(f"//自動生成なのでここに書かないで\n\n")
-        f.write(f"#define LIGHT_PATTERN_LENGTH {len(confirmed_patterns)}\n")
+        f.write(f"#define LIGHT_PATTERN_LENGTH {len(light_pattern)}\n")
         f.write(f"#define LIGHT_PATTERN_TIME_LENGTH {length}\n")
         f.write("#define LIGHT_PATTERN ")
         f.write(define_pattern)

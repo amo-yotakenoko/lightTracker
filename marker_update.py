@@ -14,7 +14,7 @@ marker_bgrs = [np.array([0, 0, 1]), np.array([0, 1, 0]), np.array([1, 0, 0])]
 def run_marker_tracking_loop(cameras, marker_id_to_color_id):
     active_marker_offset=0
 
-    arduino_controller.initialize()
+    # arduino_controller.initialize()
     # while not all_markers_are_color_2(cameras):
     #     print("タイミング同期待ち")
 
