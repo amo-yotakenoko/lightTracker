@@ -1,5 +1,6 @@
 from  chArUco_detect import *
 
+import chArUco_board
 
 # 5. 出力ファイル名を定義（PDF分割保存用）
 output_basename = "A2_ChArUco_Board"
@@ -10,8 +11,8 @@ try:
         # 2. ボードを描画
     # marginSize: ボードの外周の白い余白の幅 (ピクセル)
     # borderBits: マーカー自体の黒い枠線の幅 (通常 1 か 2)
-    board_image = board.generateImage(
-        outSize=(output_width_px, output_height_px),
+    board_image = chArUco_board.board.generateImage(
+        outSize=(chArUco_board.output_width_px, chArUco_board.output_height_px),
         marginSize=0, # 外側の白い余白を広く取る (A2に収めやすくするため)
         borderBits=1
     )

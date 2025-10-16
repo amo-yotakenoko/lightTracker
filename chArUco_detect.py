@@ -5,44 +5,12 @@ from PIL import Image
 import matplotlib.pyplot as plt
 from scipy.spatial.transform import Rotation
 import matplotlib.patches as patches
-
+import chArUco_board
 # --- 設定パラメータ ---
 
-# 1. ボードのレイアウト
-# グリッドの交点の数 (X方向, Y方向)
-squares_x = 42 // 8+1
-squares_y = 30 // 8 +1
-# 実際に描画される格子点の数は (squares_x-1, squares_y-1) になります
-
-# 2. ArUco辞書の選択
-# 例: DICT_5X5_1000 (5x5ビット, 1000個のマーカー)
-aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_100)
-
-# 3. サイズ（世界座標系/ミリメートル）- A2用紙の制約内で調整
-# ArUcoマーカーを配置する四角形（白い部分と黒い部分）の一辺の長さ (mm)
-square_length_mm = 30.0 
-# ArUcoマーカー自体の一辺の長さ (mm)
-# square_length_mm より小さくする必要があります
-marker_length_mm = 20.0 
-
-# 4. 出力画像サイズ（ピクセル）
-# A2サイズ（297*2 x 420 mm）を300 DPIで印刷する場合に必要なピクセル数に近い値
-
-output_width_px = (297*2)*10
-output_height_px = 420*10
-
-# --- ChArUcoボードの生成 ---
-
-# 1. ChArUcoBoardオブジェクトの作成
-board = cv2.aruco.CharucoBoard(
-    size=(squares_x, squares_y),
-    squareLength=square_length_mm,
-    markerLength=marker_length_mm,
-    dictionary=aruco_dict
-)
 
 
-def draw_uv_line(ax, camera_matrix, uv, camera_position=np.zeros(3)):
+def draw_uv_line(ax, camera_matrix, uv, camera_position,R):
     """
     カメラから画像上のピクセル uv への線を描画する（3D座標系）
     
@@ -62,21 +30,25 @@ def draw_uv_line(ax, camera_matrix, uv, camera_position=np.zeros(3)):
     cy = camera_matrix[1,2]
     
     # 正規化カメラ座標系
-    x_n = (u - cx) / fx
-    y_n = (v - cy) / fy
+    x_n = u  / fx
+    y_n = v  / fy
     z_n = 1.0
     
-    # 単位ベクトル
-    direction = np.array([x_n, y_n, z_n])
-    direction /= np.linalg.norm(direction)
+
     
-    # 線の終点
-    end_point = camera_position + direction * 100
-    print(camera_position,end_point)
-    # 3D線を描画
-    ax.plot([camera_position[0,0], end_point[0,0]],
-            [camera_position[1,0], end_point[1,0]],
-            [camera_position[2,0], end_point[2,0]])
+    
+    # print(f"{direction=}")
+    # # print(camera_position,end_point)
+    # # 3D線を描画
+    # ray_end = R @ direction + camera_position
+    # ax.plot([camera_position[0, 0], ray_end[0, 0]],
+    #         [camera_position[1, 0], ray_end[1, 0]],
+    #         [camera_position[2, 0], ray_end[2, 0]])
+    
+    ray_end = R @ np.array([[x_n*1000, y_n*1000, z_n*1000]]).T + camera_position
+    ax.plot([camera_position[0, 0], ray_end[0, 0]],
+                            [camera_position[1, 0], ray_end[1, 0]],
+                            [camera_position[2, 0], ray_end[2, 0]])
 
 
 if __name__ == "__main__":
@@ -126,7 +98,7 @@ if __name__ == "__main__":
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         # --- マーカー検出 ---
-        corners, ids, _ = cv2.aruco.detectMarkers(gray, aruco_dict)
+        corners, ids, _ = cv2.aruco.detectMarkers(gray, chArUco_board.aruco_dict)
 
         if ids is not None and len(ids) > 0:
             # 検出結果を画像に描画
@@ -137,20 +109,20 @@ if __name__ == "__main__":
                 markerCorners=corners,
                 markerIds=ids,
                 image=gray,
-                board=board
+                board=chArUco_board.board
             )
 
             if ret > 4:
                 # --- 姿勢推定 ---
                 valid, rvec, tvec = cv2.aruco.estimatePoseCharucoBoard(
-                    charuco_corners, charuco_ids, board, camera_matrix, dist_coeffs, None, None)
+                    charuco_corners, charuco_ids, chArUco_board.board, camera_matrix, dist_coeffs, None, None)
 
                 if valid:
                     cv2.drawFrameAxes(frame, camera_matrix, dist_coeffs, rvec, tvec, 25)
 
                     # --- 個々のマーカーの姿勢を推定 ---
                     rvecs, tvecs, _ = cv2.aruco.estimatePoseSingleMarkers(
-                        corners, marker_length_mm, camera_matrix, dist_coeffs)
+                        corners, chArUco_board.marker_length_mm, camera_matrix, dist_coeffs)
 
 
 
@@ -186,7 +158,7 @@ if __name__ == "__main__":
                             color='blue', label='Camera position')
                     
                     
-                    x1, y1 = squares_y * square_length_mm, -squares_x * square_length_mm
+                    x1, y1 = chArUco_board.squares_y * chArUco_board.square_length_mm, -chArUco_board.squares_x * chArUco_board.square_length_mm
                     # 頂点を順に並べる（時計回り）
                     rect_path = np.array([
                         [0,0, 0],  # 左下
@@ -237,14 +209,13 @@ if __name__ == "__main__":
 
                     # 各角を中心からの座標に変更
                     uv_points = [
-                        (0 , 0 ),
-                        # (0 - cx, 0 - cy),       # 左上
-                        # (0 - cx, height - cy),  # 左下
-                        # (width - cx, 0 - cy),   # 右上
-                        # (width - cx, height - cy) # 右下
+                        (-cx, -cy),   # 左上
+                        (-cx, cy),    # 左下
+                        (cx, -cy),    # 右上
+                        (cx, cy)      # 右下
                     ]
                     for uv in uv_points:
-                        draw_uv_line(ax, camera_matrix, uv, camera_position)
+                        draw_uv_line(ax, camera_matrix, uv, camera_position,R)
 
                     ax.set_xlabel("World X (mm)")
                     ax.set_ylabel("World Y (mm)")
