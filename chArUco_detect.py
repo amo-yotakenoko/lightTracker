@@ -85,16 +85,16 @@ if __name__ == "__main__":
     # fx, fy, cx, cy はカメラ内部パラメータ
 
 
-
+ 
     cap = cv2.VideoCapture(0)
 
 
-    cap.set(cv2.CAP_PROP_BRIGHTNESS, 128)
-    cap.set(cv2.CAP_PROP_CONTRAST, 32)
-    cap.set(cv2.CAP_PROP_SATURATION, 32)        # 色合い/鮮やかさに相当
-    cap.set(cv2.CAP_PROP_HUE, 0)                # 色相（必要なら）
-    cap.set(cv2.CAP_PROP_GAIN, 64)
-    cap.set(cv2.CAP_PROP_WHITE_BALANCE_BLUE_U, 4300)  # ホワイトバランス（カメラによる）
+
+
+    cap.set(cv2.CAP_PROP_BRIGHTNESS, 100)
+    # cap.set(cv2.CAP_PROP_EXPOSURE, 0) 
+    cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, 1) 
+
     if not cap.isOpened():
         print("カメラが見つかりません。")
         exit()

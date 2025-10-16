@@ -18,8 +18,8 @@ class Camera:
         id_to_xy = [(0,0)] * 30  # 最大30個のマーカーを想定
         i = 0
         cap.set(cv2.CAP_PROP_EXPOSURE, -8)  # 負の値が有効な場合もある
-        cap.set(cv2.CAP_PROP_GAIN, 0)       # ゲインを抑えるとノイズ減少
-        cap.set(cv2.CAP_PROP_BRIGHTNESS, 0) # 明るさ補正を無効に近づける
+        # cap.set(cv2.CAP_PROP_GAIN, 0)       # ゲインを抑えるとノイズ減少
+        # cap.set(cv2.CAP_PROP_BRIGHTNESS, 0) # 明るさ補正を無効に近づける
 
         # 右上にウィンドウを表示（x=1000, y=50 は適宜調整）
         cv2.namedWindow(name)

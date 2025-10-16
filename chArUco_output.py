@@ -1,4 +1,4 @@
-from  chArUco_board import *
+from  chArUco_detect import *
 
 
 # 5. 出力ファイル名を定義（PDF分割保存用）

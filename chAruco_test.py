@@ -20,7 +20,10 @@ board = cv2.aruco.CharucoBoard(
 
 # --- カメラの準備 ---
 cap = cv2.VideoCapture(0) # 0はデフォルトのカメラ
-cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, 1) # 自動露出を有効にする
+# cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, 1) # ?自動露出を有効にする
+# print(f"{cap.get(cv2.CAP_PROP_AUTO_EXPOSURE)=}")
+# cap.set(cv2.CAP_PROP_EXPOSURE, 1)  # 負の値が有効な場合もある
+
 
 
 if not cap.isOpened():
