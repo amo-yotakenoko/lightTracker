@@ -45,6 +45,7 @@ class Camera:
         return chArUco_detect.get_camera_pose(self.frame, self)
 
     def detect_markers(self, name, cap, window_pos):
+       
         cv2.namedWindow(name)
         cv2.moveWindow(name, window_pos[0], window_pos[1])
 

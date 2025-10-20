@@ -10,8 +10,9 @@ import os
 import arduino_controller
 from arduino_controller import led_set, led_show, led_clear
 import settings
+import estimation
 load_dotenv()
-
+print("環境変数読み込み")
 if settings.mode=="serialSync":
     arduino_controller.initialize()
 
@@ -34,6 +35,7 @@ x_spacing = 700 # ウィンドウ幅想定
 y_spacing = 300 # ウィンドウ高さ想定
 
 for idx, camera_id in enumerate(camera_ids):
+        print(f"{camera_id}")
             # ウィンドウ位置を計算（横に並べる例）
         x = x_offset + (idx % 3) * x_spacing
         y = y_offset + (idx // 3) * y_spacing
@@ -48,6 +50,17 @@ for idx, camera_id in enumerate(camera_ids):
                                         args=(f"{camera_id}",
                    cap,
                    (x,y),)))
+        
+
+
+
+
+
+threadings.append(threading.Thread(target=estimation.estimation,
+                                daemon=True,
+                                args=(cameras,)))
+
+
 
 if settings.mode=="serialSync":
     # マーカー更新ループのスレッドを追加
@@ -56,7 +69,7 @@ if settings.mode=="serialSync":
                                     args=(cameras, marker_id_to_color_id)))
 
 
-
+print("スレッドスタート")
 for t in threadings:
     t.start()
 

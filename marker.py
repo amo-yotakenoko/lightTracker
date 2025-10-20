@@ -33,6 +33,8 @@ class Marker:
                 self.track.pop(0)
 
 
+
+
     def update_color(self, color):
         with self._lock:
             distances = [np.linalg.norm(c - np.array(color)) for c in marker_update.marker_bgrs]
