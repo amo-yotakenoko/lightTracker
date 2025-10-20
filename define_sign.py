@@ -1,7 +1,7 @@
 import itertools
 import random
 elements = [0, 1, 2]
-length = 8
+length = 5
 
 
 

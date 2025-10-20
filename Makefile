@@ -17,26 +17,28 @@ deploy:
 
 
 # Arduino
-BOARD_FQBN = arduino:avr:uno
+# BOARD_FQBN = arduino:avr:uno
+BOARD_FQBN = SparkFun:avr:promicro:cpu=16MHzatmega32U4
 SKETCH = lightTracker
 AUTOPATTERN_SKETCH = autopattern
 AUTOPATTERN_2_SKETCH = autopattern_v2
 
 
-.PHONY: upload arduino port autopattern autopattern
+.PHONY: upload arduino port autopattern autopattern promicroinit
 
 arduino:
 	cmd.exe /C "arduino-cli compile --fqbn $(BOARD_FQBN) --build-path build-lightTracker $(SKETCH)"
 	cmd.exe /C "arduino-cli upload -p $(PORT) --fqbn $(BOARD_FQBN) --input-dir build-lightTracker $(SKETCH)"
 
+# autopattern:
+# 	@echo "Using port: $(PORT)"
+# 	cmd.exe /C "arduino-cli compile --fqbn $(BOARD_FQBN) --build-path build-autopattern $(AUTOPATTERN_SKETCH)"
+# 	cmd.exe /C "arduino-cli upload -p $(PORT) --fqbn $(BOARD_FQBN) --input-dir build-autopattern $(AUTOPATTERN_SKETCH)"
+
 autopattern:
 	@echo "Using port: $(PORT)"
-	cmd.exe /C "arduino-cli compile --fqbn $(BOARD_FQBN) --build-path build-autopattern $(AUTOPATTERN_SKETCH)"
-	cmd.exe /C "arduino-cli upload -p $(PORT) --fqbn $(BOARD_FQBN) --input-dir build-autopattern $(AUTOPATTERN_SKETCH)"
-
-autopattern2:
-	@echo "Using port: $(PORT)"
 	cmd.exe /C python define_sign.py
+	cmd.exe /C arduino-cli board details -b SparkFun:avr:promicro 
 	cmd.exe /C "arduino-cli compile --fqbn $(BOARD_FQBN) --build-path build-autopattern $(AUTOPATTERN_2_SKETCH)"
 	cmd.exe /C "arduino-cli upload -p $(PORT) --fqbn $(BOARD_FQBN) --input-dir build-autopattern $(AUTOPATTERN_2_SKETCH)"
 
@@ -57,3 +59,12 @@ camtest:
 
 imgclr:
 	rm *.jpg
+
+
+
+promicroinit:
+	cmd.exe /C arduino-cli config init
+	cmd.exe /C arduino-cli config add board_manager.additional_urls https://raw.githubusercontent.com/sparkfun/Arduino_Boards/master/IDE_Board_Manager/package_sparkfun_index.json
+	cmd.exe /C arduino-cli core update-index
+	cmd.exe /C arduino-cli core install sparkfun:avr
+	cmd.exe /C arduino-cli board listall

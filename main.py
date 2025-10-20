@@ -56,6 +56,7 @@ if settings.mode=="serialSync":
                                     args=(cameras, marker_id_to_color_id)))
 
 
+
 for t in threadings:
     t.start()
 
