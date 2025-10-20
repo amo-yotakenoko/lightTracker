@@ -108,6 +108,45 @@ def plot_board(ax):
 
 
 
+def compute_position_gradient(tracker_object, object, cameras, eps=1.0):
+    """
+    object.position に対する勾配を有限差分で計算
+    """
+    grad = np.zeros(3, dtype=np.float32)
+    shifts = [np.array([-eps,0,0],dtype=np.float32),
+              np.array([ eps,0,0],dtype=np.float32),
+              np.array([0,-eps,0],dtype=np.float32),
+              np.array([0, eps,0],dtype=np.float32),
+              np.array([0,0,-eps],dtype=np.float32),
+              np.array([0,0, eps],dtype=np.float32)]
+    
+    # x
+    grad[0] = tracker_object.error_distance(object.transformed_markers(add_position=shifts[0]), cameras) - \
+              tracker_object.error_distance(object.transformed_markers(add_position=shifts[1]), cameras)
+    # y
+    grad[1] = tracker_object.error_distance(object.transformed_markers(add_position=shifts[2]), cameras) - \
+              tracker_object.error_distance(object.transformed_markers(add_position=shifts[3]), cameras)
+    # z
+    grad[2] = tracker_object.error_distance(object.transformed_markers(add_position=shifts[4]), cameras) - \
+              tracker_object.error_distance(object.transformed_markers(add_position=shifts[5]), cameras)
+    
+    grad *= 2.0  # 元のコードに合わせる
+    return grad
+
+def rotation_from_vector(rot_vec):
+    """小回転ベクトル -> 回転行列 (ロドリゲスの公式)"""
+    theta = np.linalg.norm(rot_vec)
+    if theta < 1e-8:
+        return np.eye(3, dtype=np.float32)
+    axis = rot_vec / theta
+    K = np.array([[0, -axis[2], axis[1]],
+                  [axis[2], 0, -axis[0]],
+                  [-axis[1], axis[0], 0]], dtype=np.float32)
+    R = np.eye(3) + np.sin(theta)*K + (1-np.cos(theta))*(K@K)
+    return R.astype(np.float32)
+
+
+
 def estimation(cameras):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
@@ -125,14 +164,22 @@ def estimation(cameras):
                 if(len(marker.estimate_id())!=1):
                     continue
 
-                print(f"{marker.position=},{marker.estimate_id()=}" )
+                # print(f"{marker.position=},{marker.estimate_id()=}" )
                 draw_uv_line( cam, marker.position,ax,text=f"{marker.estimate_id()}")
 
 
 
         for object in tracker_object.objects:
+            print("----")
             object.plot(ax)
-            object.position+=np.array([1,1,-1],dtype=np.float32).T
+            grad_pos = compute_position_gradient(tracker_object, object, cameras)
+
+            # 更新
+            object.position += grad_pos
+            # 回転更新はrotation行列やオイラー角に合わせて適用
+            # object.rotation = object.rotation @ grad_rot
+
+
 
 
 
@@ -143,7 +190,7 @@ def estimation(cameras):
 
         plt.draw()
         plt.pause(0.01)
-        print(f"{(cam.cx, cam.cy)=}")
+
 
 
 #         marker.position=array([356., 238.], dtype=float32),marker.estimate_id()=[0]
