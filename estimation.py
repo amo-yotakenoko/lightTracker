@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import chArUco_board
 import tracker_object
-
+from scipy.spatial.transform import Rotation as R
 
 def uv_to_ray(cam, uv, scale=1000.0):
     """
@@ -130,20 +130,23 @@ def compute_position_gradient(tracker_object, object, cameras, eps=1.0):
     grad[2] = tracker_object.error_distance(object.transformed_markers(add_position=shifts[4]), cameras) - \
               tracker_object.error_distance(object.transformed_markers(add_position=shifts[5]), cameras)
     
-    grad *= 2.0  # 元のコードに合わせる
+    # grad *= 2.0  # 元のコードに合わせる
     return grad
 
-def rotation_from_vector(rot_vec):
-    """小回転ベクトル -> 回転行列 (ロドリゲスの公式)"""
-    theta = np.linalg.norm(rot_vec)
-    if theta < 1e-8:
-        return np.eye(3, dtype=np.float32)
-    axis = rot_vec / theta
-    K = np.array([[0, -axis[2], axis[1]],
-                  [axis[2], 0, -axis[0]],
-                  [-axis[1], axis[0], 0]], dtype=np.float32)
-    R = np.eye(3) + np.sin(theta)*K + (1-np.cos(theta))*(K@K)
-    return R.astype(np.float32)
+
+def compute_rotation_gradient(tracker_object, object, cameras, eps=1.0):
+
+    grad = {}
+
+    for axis in ['x','y','z']:
+        
+        grad[axis] = tracker_object.error_distance(object.transformed_markers(add_rotation=R.from_euler(axis, -1, degrees=True).as_matrix()), cameras)-\
+                     tracker_object.error_distance(object.transformed_markers(add_rotation=R.from_euler(axis, 1, degrees=True).as_matrix()), cameras)
+
+    
+    # grad *= 2.0  # 元のコードに合わせる
+    return grad
+
 
 
 
@@ -173,11 +176,13 @@ def estimation(cameras):
             print("----")
             object.plot(ax)
             grad_pos = compute_position_gradient(tracker_object, object, cameras)
+            grad_rot = compute_rotation_gradient(tracker_object, object, cameras)
 
             # 更新
             object.position += grad_pos
-            # 回転更新はrotation行列やオイラー角に合わせて適用
-            # object.rotation = object.rotation @ grad_rot
+            print(f"Position Gradient: {grad_rot}")
+            for axis, grad in grad_rot.items():
+                    object.rotation = object.rotation @  R.from_euler(axis, grad, degrees=True).as_matrix()
 
 
 

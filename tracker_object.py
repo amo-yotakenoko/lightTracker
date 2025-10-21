@@ -70,7 +70,7 @@ def error_distance(transformed_markers,cameras,ax=None):
             
 
             for obj_id, obj_pos in transformed_markers:
-                print(f"Marker ID: {marker_id}, Object ID: {obj_id}")
+                # print(f"Marker ID: {marker_id}, Object ID: {obj_id}")
 
                 if obj_id != marker_id:
                     continue
@@ -89,7 +89,7 @@ def error_distance(transformed_markers,cameras,ax=None):
                 projection = p0 + t * line_vec
                 distance = np.linalg.norm(p2 - projection)
                 total_error += distance
-                print(f"Marker ID: {marker_id}, Object ID: {obj_id}, Distance: {distance}")
+                # print(f"Marker ID: {marker_id}, Object ID: {obj_id}, Distance: {distance}")
 
                 # if ax is not None:
                 #     # 元の直線を描画（任意の長さ）
