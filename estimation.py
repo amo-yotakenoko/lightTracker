@@ -95,6 +95,7 @@ def plot_camera_pose(cam,ax):
 
 def plot_board(ax):
         x1, y1 = chArUco_board.squares_y * chArUco_board.square_length_mm, -chArUco_board.squares_x * chArUco_board.square_length_mm
+        print(f"board:{x1=},{y1=}")
         # 頂点を順に並べる（時計回り）
         rect_path = np.array([
             [0,0, 0],  # 左下
@@ -108,7 +109,7 @@ def plot_board(ax):
 
 
 
-def compute_position_gradient(tracker_object, object, cameras, eps=1.0):
+def compute_position_gradient( object, cameras, eps=0.1):
     """
     object.position に対する勾配を有限差分で計算
     """
@@ -130,28 +131,41 @@ def compute_position_gradient(tracker_object, object, cameras, eps=1.0):
     grad[2] = tracker_object.error_distance(object.transformed_markers(add_position=shifts[4]), cameras) - \
               tracker_object.error_distance(object.transformed_markers(add_position=shifts[5]), cameras)
     
-    # grad *= 2.0  # 元のコードに合わせる
+    grad *= 0.1  # 元のコードに合わせる
     return grad
 
 
-def compute_rotation_gradient(tracker_object, object, cameras, eps=1.0):
+def compute_rotation_gradient( object, cameras, eps=0.1):
+    # 現在の回転
+    rot = R.identity()
 
-    grad = {}
+    grad_rotvec = np.zeros(3)  # X, Y, Z軸の回転ベクトル勾配
 
-    for axis in ['x','y','z']:
-        
-        grad[axis] = tracker_object.error_distance(object.transformed_markers(add_rotation=R.from_euler(axis, -1, degrees=True).as_matrix()), cameras)-\
-                     tracker_object.error_distance(object.transformed_markers(add_rotation=R.from_euler(axis, 1, degrees=True).as_matrix()), cameras)
+    for i, axis in enumerate(['x', 'y', 'z']):
+        # 微小回転
+        delta = np.zeros(3)
+        delta[i] = eps  # 軸方向だけ回転
+        rot_plus = R.from_rotvec(delta) * rot
+        rot_minus = R.from_rotvec(-delta) * rot
 
-    
-    # grad *= 2.0  # 元のコードに合わせる
-    return grad
+        # 誤差計算
+        err_plus = tracker_object.error_distance(object.transformed_markers(add_rotation=rot_plus.as_matrix()), cameras)
+        err_minus = tracker_object.error_distance(object.transformed_markers(add_rotation=rot_minus.as_matrix()), cameras)
+
+        # 中心差分
+        grad_rotvec[i] = (err_plus - err_minus) / (2*eps)
+
+        # 回転更新
+        delta_rot = R.from_rotvec(-grad_rotvec * 0.0001)  # 学習率的に調整
+        rot = delta_rot * rot
+    return rot
 
 
 
 
 def estimation(cameras):
     fig = plt.figure()
+    fig.subplots_adjust(left=0, right=1, top=1, bottom=0)
     ax = fig.add_subplot(111, projection='3d')
     plt.ion() # インタラクティブモードをオン
     while True:
@@ -175,14 +189,17 @@ def estimation(cameras):
         for object in tracker_object.objects:
             print("----")
             object.plot(ax)
-            grad_pos = compute_position_gradient(tracker_object, object, cameras)
-            grad_rot = compute_rotation_gradient(tracker_object, object, cameras)
-
-            # 更新
+            tracker_object.error_distance(object.transformed_markers(), cameras,ax=ax)
+            grad_pos = compute_position_gradient( object, cameras)
             object.position += grad_pos
-            print(f"Position Gradient: {grad_rot}")
-            for axis, grad in grad_rot.items():
-                    object.rotation = object.rotation @  R.from_euler(axis, grad, degrees=True).as_matrix()
+
+
+            grad_rot = compute_rotation_gradient( object, cameras)
+            object.rotation = object.rotation @  grad_rot.as_matrix()
+
+
+            # u, _, v = np.linalg.svd(object.rotation)
+            # object.rotation = u @ v
 
 
 
@@ -192,6 +209,7 @@ def estimation(cameras):
         ax.set_xlim([200, -200])
         ax.set_ylim([000, 400])
         ax.set_zlim([0, -400])
+        # ax.set_box_aspect([1,1,1]) 
 
         plt.draw()
         plt.pause(0.01)

@@ -6,13 +6,13 @@ class TrackerObject:
         self.markers={}
         self.position=np.array([0,0,0],dtype=np.float32).T
         self.rotation=np.eye(3)
-        r=40/2
-        h=50/2
+        self.r=40/2
+        self.h=50/2
 
         for i in range(6):
-            x=math.cos(math.radians(60*i))*r
-            y=math.sin(math.radians(60*i))*r
-            z=(0 if i%2==0 else h)
+            x=math.cos(math.radians(60*i))*self.r
+            y=math.sin(math.radians(60*i))*self.r
+            z=(0 if i%2==0 else self.h)
             self.markers[i]=np.array([x,y,z]).T
 
 
@@ -28,6 +28,11 @@ class TrackerObject:
             transformed_pos = rotation @ pos + position
             yield i, transformed_pos
 
+    
+
+
+        
+
 
 
     def plot(self,ax):
@@ -39,6 +44,62 @@ class TrackerObject:
             ys.append(pos[1])
             zs.append(pos[2])
         ax.plot(xs,ys,zs,color='red' ,   marker='*',    markersize=10, )
+
+
+
+        for h in [0,self.h]:
+            # x, y 座標を計算
+            theta = np.linspace(0, 2*np.pi, 200)
+            x = self.r * np.cos(theta)
+            y = self.r * np.sin(theta)
+            z = np.zeros_like(theta) +h
+            pos = np.vstack((x, y, z))  # shape (3, 200)
+
+            # 3. 回転と平行移動
+            transformed_pos = self.rotation @ pos + self.position.reshape(3,1)
+
+            ax.plot(
+                transformed_pos[0, :], 
+                transformed_pos[1, :], 
+                transformed_pos[2, :], 
+                color='blue'
+                )
+
+
+        # # X軸 (赤)
+        # x_axis_world = self.rotation @ np.array([[50, 0, 0]]).T + self.position
+        # ax.plot([self.position[0], x_axis_world[0, 0]],
+        #         [self.position[1], x_axis_world[1, 0]],
+        #         [self.position[2], x_axis_world[2, 0]], color='red', label='Cam X')
+        # # Y軸 (緑)
+        # y_axis_world = self.rotation @ np.array([[0, 50, 0]]).T + self.position
+        # ax.plot([self.position[0], y_axis_world[0, 0]],
+        #         [self.position[1], y_axis_world[1, 0]],
+        #         [self.position[2], y_axis_world[2, 0]], color='green', label='Cam Y')
+        # # Z軸 (青)
+        # z_axis_world = self.rotation @ np.array([[0, 0, 10]]).T + self.position
+        # ax.plot([self.position[0], z_axis_world[0, 0]],
+        #         [self.position[1], z_axis_world[1, 0]],
+        #         [self.position[2], z_axis_world[2, 0]], color='blue', label='Cam Z')
+        
+                # X軸 (赤)
+        x_axis_world = self.rotation @ np.array([50, 0, 0]).T+self.position
+        print(f"{self.position=},{x_axis_world=}")
+        ax.plot([self.position[0], x_axis_world[0]],
+                [self.position[1], x_axis_world[1]],
+                [self.position[2], x_axis_world[2]], color='red')
+        # Y軸 (緑)
+        y_axis_world = self.rotation @ np.array([0, 50, 0]).T +self.position
+        ax.plot([self.position[0], y_axis_world[0]],
+                [self.position[1], y_axis_world[1]],
+                [self.position[2], y_axis_world[2]], color='green')
+        # Z軸 (青)
+        z_axis_world = self.rotation @ np.array([0, 0, 50]).T +self.position
+        ax.plot([self.position[0], z_axis_world[0]],
+                [self.position[1], z_axis_world[1]],
+                [self.position[2], z_axis_world[2]], color='blue')
+            
+
             
 
 
@@ -55,7 +116,7 @@ def error_distance(transformed_markers,cameras,ax=None):
         if cam.camera_position is None or cam.camera_rotation is None:
             continue
         for marker in cam.markers:
-            print(f"{marker.estimate_id()=}{len(marker.estimate_id())=}{len(marker.estimate_id())!=1=}")
+            # print(f"{marker.estimate_id()=}{len(marker.estimate_id())=}{len(marker.estimate_id())!=1=}")
             if(len(marker.estimate_id())!=1):
                 continue
             marker_id=marker.estimate_id()[0]
@@ -88,9 +149,8 @@ def error_distance(transformed_markers,cameras,ax=None):
                 # t = max(0, min(1, t))  # tを0から1の範囲に制限
                 projection = p0 + t * line_vec
                 distance = np.linalg.norm(p2 - projection)
-                total_error += distance
-                # print(f"Marker ID: {marker_id}, Object ID: {obj_id}, Distance: {distance}")
-
+                total_error += distance**2
+                               
                 # if ax is not None:
                 #     # 元の直線を描画（任意の長さ）
                 #     ax.plot(
