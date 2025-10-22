@@ -1,13 +1,14 @@
 import numpy as np
 import math
 import estimation
+import define_sign
 class TrackerObject:
     def __init__(self):
         self.markers={}
         self.position=np.array([0,0,0],dtype=np.float32).T
         self.rotation=np.eye(3)
-        self.r=40/2
-        self.h=50/2
+        self.r=40/2*3
+        self.h=50/2*3
 
         for i in range(6):
             x=math.cos(math.radians(60*i))*self.r
@@ -39,11 +40,17 @@ class TrackerObject:
         xs=[]
         ys=[]
         zs=[]
+        colors=[]
         for i,pos in self.transformed_markers():
             xs.append(pos[0])
             ys.append(pos[1])
             zs.append(pos[2])
-        ax.plot(xs,ys,zs,color='red' ,   marker='*',    markersize=10, )
+            colors.append(define_sign.marker_display_colors[i])
+        ax.scatter(xs, ys, zs, color=colors, marker='*', s=100)
+        ax.plot(xs,ys,zs,color='k' ,linewidth=0.5, )
+        
+
+        # ax.scatter(xs, ys, zs, color=colors, marker='*', s=100) 
 
 
 
@@ -62,7 +69,7 @@ class TrackerObject:
                 transformed_pos[0, :], 
                 transformed_pos[1, :], 
                 transformed_pos[2, :], 
-                color='blue'
+                color='k',linewidth=0.5,
                 )
 
 
@@ -121,8 +128,8 @@ def error_distance(transformed_markers,cameras,ax=None):
                 continue
             marker_id=marker.estimate_id()[0]
             ray_origin=cam.camera_position
-            print(f"{marker.position=}")
-            ray_emit=  estimation.uv_to_ray(cam, marker.position, scale=1000.0)
+            # print(f"{marker.position=}")
+            ray_emit=  estimation.uv_to_ray(cam, marker.position)
             # estimation.draw_uv_line(cam,marker.position,ax)
             # ax.plot([cam.camera_position[0, 0], ray_emit[0, 0]],
             #                 [cam.camera_position[1, 0],ray_emit[1, 0]],

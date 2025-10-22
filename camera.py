@@ -8,6 +8,7 @@ import marker_update
 from marker import Marker
 import chArUco_detect
 import chArUco_board
+import chAruco_calibration
 
 class Camera:
 
@@ -22,22 +23,28 @@ class Camera:
         self.height, self.width = None, None
         self.cx, self.cy = None, None
         self.fx, self.fy = None, None
-        self.camera_matrix = None
-        self.dist_coeffs = np.zeros((5, 1))  # 歪み補正なし
+        self.camera_matrix = chAruco_calibration.camera_matrix
+        self.dist_coeffs =chAruco_calibration.dist_coeffs
 
         self.corners ,self.ids,self.rvec, self.tvec=None,None,None,None
 
     def _initialize_camera_parameters(self, cap):
-        ret, self.frame = cap.read()
-        if not ret:
-            raise RuntimeError("カメラフレームの読み取りに失敗しました。")
-        self.height, self.width = self.frame.shape[:2]
-        self.cx = self.width / 2
-        self.cy = self.height / 2
-        self.fx = self.fy = self.width  # 仮値でOK
-        self.camera_matrix = np.array([[self.fx, 0, self.cx],
-                                       [0, self.fy, self.cy],
-                                       [0, 0, 1]], dtype=float)
+        if False:
+            ret, self.frame = cap.read()
+            if not ret:
+                raise RuntimeError("カメラフレームの読み取りに失敗しました。")
+            self.height, self.width = self.frame.shape[:2]
+            self.cx = self.width / 2
+            self.cy = self.height / 2
+            self.fx = self.fy = self.width  # 仮値でOK
+            self.camera_matrix = np.array([[self.fx, 0, self.cx],
+                                        [0, self.fy, self.cy],
+                                        [0, 0, 1]], dtype=float)
+            
+        self.fx = chAruco_calibration.camera_matrix[0,0]
+        self.fy = chAruco_calibration.camera_matrix[1,1]
+        self.cx = chAruco_calibration.camera_matrix[0,2]
+        self.cy = chAruco_calibration.camera_matrix[1,2]
 
     def get_camera_pose(self):
         if self.frame is None:
@@ -49,11 +56,8 @@ class Camera:
         cv2.namedWindow(name)
         cv2.moveWindow(name, window_pos[0], window_pos[1])
 
-        try:
-            self._initialize_camera_parameters(cap)
-        except RuntimeError as e:
-            print(e)
-            return
+
+        self._initialize_camera_parameters(cap)
 
         cap.set(cv2.CAP_PROP_BRIGHTNESS, 100)
         cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, 1)
@@ -61,6 +65,7 @@ class Camera:
         print("カメラの姿勢を推定中...")
         while self.camera_position is None or self.camera_rotation is None:
             ret, self.frame = cap.read()
+            self.height, self.width = self.frame.shape[:2]
             if not ret:
                 print("カメラが見つかりません。")
                 break

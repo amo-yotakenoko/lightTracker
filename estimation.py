@@ -6,27 +6,36 @@ import numpy as np
 import chArUco_board
 import tracker_object
 from scipy.spatial.transform import Rotation as R
+import define_sign
+import cv2
 
-def uv_to_ray(cam, uv, scale=1000.0):
+
+
+def uv_to_ray(cam, uv, scale=10000.0):
     """
     画像上のピクセル uv からワールド座標系でのレイ終端点を計算して返す。
+    cam.dist_coeffs を使ってレンズ歪みを補正する。
     """
     u, v = uv
-    fx = cam.camera_matrix[0, 0]
-    fy = cam.camera_matrix[1, 1]
-    cx = cam.camera_matrix[0, 2]
-    cy = cam.camera_matrix[1, 2]
+    # 歪み補正
+    uv_undistorted = cv2.undistortPoints(
+        np.array([[u, v]], dtype=np.float32).reshape(1,1,2),  # 1x1x2 に変形
+        cam.camera_matrix,
+        cam.dist_coeffs
+    )
 
     # 正規化カメラ座標系
-    x_n = (u - cx) / fx
-    y_n = (v - cy) / fy
+    x_n = uv_undistorted[0,0,0]
+    y_n = uv_undistorted[0,0,1]
     z_n = 1.0
 
     ray_cam = np.array([[x_n * scale, y_n * scale, z_n * scale]]).T
-    return cam.camera_rotation @ ray_cam + cam.camera_position
+    # カメラ座標 → ワールド座標
+    ray_world = cam.camera_rotation @ ray_cam + cam.camera_position
+    return ray_world
 
 
-def draw_uv_line(cam,uv,ax,text=None):
+def draw_uv_line(cam,uv,ax,color=None,text=None):
     """
     カメラから画像上のピクセル uv への線を描画する（3D座標系）
     
@@ -40,13 +49,15 @@ def draw_uv_line(cam,uv,ax,text=None):
     color : str 線の色
     """
 
-    ray_end = uv_to_ray(cam, uv, scale=1000.0)
+    ray_end = uv_to_ray(cam, uv)
 
     ax.plot([cam.camera_position[0, 0], ray_end[0, 0]],
                             [cam.camera_position[1, 0], ray_end[1, 0]],
-                            [cam.camera_position[2, 0], ray_end[2, 0]])
+                            [cam.camera_position[2, 0], ray_end[2, 0]],color=color)
+    
     if text is not None:
-        ax.text(ray_end[0, 0], ray_end[1, 0], ray_end[2, 0], text, color='black')
+        color = color if color is not None else 'black'
+        ax.text(ray_end[0, 0], ray_end[1, 0], ray_end[2, 0], text, color=color )
 
 
 
@@ -87,7 +98,7 @@ def plot_camera_pose(cam,ax):
            np.array([cam.cx*2, cam.cy*2])      # 右下
         ]
         for uv in uv_points:
-            draw_uv_line( cam, uv,ax)
+            draw_uv_line( cam, uv,ax,color='gray')
 
 
 
@@ -131,7 +142,7 @@ def compute_position_gradient( object, cameras, eps=0.1):
     grad[2] = tracker_object.error_distance(object.transformed_markers(add_position=shifts[4]), cameras) - \
               tracker_object.error_distance(object.transformed_markers(add_position=shifts[5]), cameras)
     
-    grad *= 0.1  # 元のコードに合わせる
+    grad *= 1.5  
     return grad
 
 
@@ -182,7 +193,8 @@ def estimation(cameras):
                     continue
 
                 # print(f"{marker.position=},{marker.estimate_id()=}" )
-                draw_uv_line( cam, marker.position,ax,text=f"{marker.estimate_id()}")
+                print(f"{define_sign.marker_display_colors[marker.estimate_id()[0]]=}")
+                draw_uv_line( cam, marker.position,ax,text=f"{marker.estimate_id()}",color=define_sign.marker_display_colors[marker.estimate_id()[0]])
 
 
 
@@ -190,25 +202,38 @@ def estimation(cameras):
             print("----")
             object.plot(ax)
             tracker_object.error_distance(object.transformed_markers(), cameras,ax=ax)
-            grad_pos = compute_position_gradient( object, cameras)
-            object.position += grad_pos
+            for i in range(50):
+                grad_pos = compute_position_gradient( object, cameras)
+                object.position += grad_pos
 
 
-            grad_rot = compute_rotation_gradient( object, cameras)
-            object.rotation = object.rotation @  grad_rot.as_matrix()
+                grad_rot = compute_rotation_gradient( object, cameras)
+                object.rotation = object.rotation @  grad_rot.as_matrix()
 
 
             # u, _, v = np.linalg.svd(object.rotation)
             # object.rotation = u @ v
 
 
+       
+        size=chArUco_board.squares_y * chArUco_board.square_length_mm*2
+        offset = np.array([
+            size/2*0.5,size/2,-size/2
+        ], dtype=np.float32)
+        if False:
+            size=200
+            offset=object.position
+
+        ax.set_xlim([offset[0]-size/2, offset[0]+size/2])
+        ax.set_ylim([offset[1]+size/2, offset[1]-size/2])
+        ax.set_zlim([ offset[2]+size/2, offset[2]-size/2])
+        ax.set_xlabel('X')
+        ax.set_ylabel('Y')
+        ax.set_zlabel('Z')
+
+        print(f"{object.position=}")
 
 
-
-
-        ax.set_xlim([200, -200])
-        ax.set_ylim([000, 400])
-        ax.set_zlim([0, -400])
         # ax.set_box_aspect([1,1,1]) 
 
         plt.draw()

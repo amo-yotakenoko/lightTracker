@@ -1,7 +1,11 @@
 import itertools
 import random
+import matplotlib.pyplot as plt
+import numpy as np
 elements = [0, 1, 2]
 length = 5
+
+
 
 
 
@@ -72,6 +76,8 @@ def get_pattern():
 print("get_pattern()")
 light_pattern=get_pattern()
 print(f"{light_pattern=}")
+
+marker_display_colors=plt.cm.rainbow(np.linspace(0, 1, len(light_pattern))) 
 
 
 if __name__ == "__main__":

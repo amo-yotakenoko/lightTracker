@@ -11,6 +11,7 @@ import arduino_controller
 from arduino_controller import led_set, led_show, led_clear
 import settings
 import estimation
+import chAruco_calibration
 load_dotenv()
 print("環境変数読み込み")
 if settings.mode=="serialSync":

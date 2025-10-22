@@ -12,10 +12,10 @@ aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_100)
 
 # 3. サイズ（世界座標系/ミリメートル）- A2用紙の制約内で調整
 # ArUcoマーカーを配置する四角形（白い部分と黒い部分）の一辺の長さ (mm)
-square_length_mm = 30.0 
+square_length_mm = 83.0
 # ArUcoマーカー自体の一辺の長さ (mm)
 # square_length_mm より小さくする必要があります
-marker_length_mm = 20.0 
+marker_length_mm = square_length_mm*(2.0/3.0) 
 
 # 4. 出力画像サイズ（ピクセル）
 # A2サイズ（297*2 x 420 mm）を300 DPIで印刷する場合に必要なピクセル数に近い値
