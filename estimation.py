@@ -198,8 +198,10 @@ def estimation(cameras):
                 # print(f"{marker.position=},{marker.estimate_id()=}" )
                 # print(f"{define_sign.marker_display_colors[marker.estimate_id()[0]]=}")
                 draw_uv_line( cam, marker.position,ax,text=f"{marker.estimate_id()}",color=define_sign.marker_display_colors[marker.estimate_id()[0]])
+                draw_uv_line( cam, marker.position,ax_zoom,color=define_sign.marker_display_colors[marker.estimate_id()[0]])
 
             tracker_object.error_distance(object.transformed_markers(), cameras,ax=ax)
+            tracker_object.error_distance(object.transformed_markers(), cameras,ax=ax_zoom)
             for i in range(5):
                 grad_pos = compute_position_gradient( object, cameras)
                 object.position += grad_pos

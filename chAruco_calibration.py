@@ -109,20 +109,20 @@ def calc_camera_params(save_interval = 2.0):
         # -----------------------------
         # 4. 歪み補正確認
         # -----------------------------
-        cap = cv2.VideoCapture(0)
-        print("リアルタイムで歪み補正表示: 'q' で終了")
-        while True:
-            ret, frame = cap.read()
-            if not ret:
-                break
-            h, w = frame.shape[:2]
-            new_camera_matrix, roi = cv2.getOptimalNewCameraMatrix(
-                camera_matrix, dist_coeffs, (w, h), 1, (w, h)
-            )
-            undistorted = cv2.undistort(frame, camera_matrix, dist_coeffs, None, new_camera_matrix)
-            cv2.imshow('Undistorted', undistorted)
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
+        # cap = cv2.VideoCapture(0)
+        # print("リアルタイムで歪み補正表示: 'q' で終了")
+        # while True:
+        #     ret, frame = cap.read()
+        #     if not ret:
+        #         break
+        #     h, w = frame.shape[:2]
+        #     new_camera_matrix, roi = cv2.getOptimalNewCameraMatrix(
+        #         camera_matrix, dist_coeffs, (w, h), 1, (w, h)
+        #     )
+        #     undistorted = cv2.undistort(frame, camera_matrix, dist_coeffs, None, new_camera_matrix)
+        #     cv2.imshow('Undistorted', undistorted)
+        #     if cv2.waitKey(1) & 0xFF == ord('q'):
+        #         break
         cap.release()
         cv2.destroyAllWindows()
 
