@@ -106,7 +106,7 @@ def plot_camera_pose(cam,ax):
 
 def plot_board(ax):
         x1, y1 = chArUco_board.squares_y * chArUco_board.square_length_mm, -chArUco_board.squares_x * chArUco_board.square_length_mm
-        print(f"board:{x1=},{y1=}")
+        # print(f"board:{x1=},{y1=}")
         # 頂点を順に並べる（時計回り）
         rect_path = np.array([
             [0,0, 0],  # 左下
@@ -142,7 +142,7 @@ def compute_position_gradient( object, cameras, eps=0.1):
     grad[2] = tracker_object.error_distance(object.transformed_markers(add_position=shifts[4]), cameras) - \
               tracker_object.error_distance(object.transformed_markers(add_position=shifts[5]), cameras)
     
-    grad *= 1.5  
+    grad *= 0.5  
     return grad
 
 
@@ -193,16 +193,16 @@ def estimation(cameras):
                     continue
 
                 # print(f"{marker.position=},{marker.estimate_id()=}" )
-                print(f"{define_sign.marker_display_colors[marker.estimate_id()[0]]=}")
+                # print(f"{define_sign.marker_display_colors[marker.estimate_id()[0]]=}")
                 draw_uv_line( cam, marker.position,ax,text=f"{marker.estimate_id()}",color=define_sign.marker_display_colors[marker.estimate_id()[0]])
 
 
 
         for object in tracker_object.objects:
-            print("----")
+            # print("----")
             object.plot(ax)
             tracker_object.error_distance(object.transformed_markers(), cameras,ax=ax)
-            for i in range(50):
+            for i in range(5):
                 grad_pos = compute_position_gradient( object, cameras)
                 object.position += grad_pos
 
@@ -231,7 +231,7 @@ def estimation(cameras):
         ax.set_ylabel('Y')
         ax.set_zlabel('Z')
 
-        print(f"{object.position=}")
+        # print(f"{object.position=}")
 
 
         # ax.set_box_aspect([1,1,1]) 

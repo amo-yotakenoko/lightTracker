@@ -7,8 +7,8 @@ class TrackerObject:
         self.markers={}
         self.position=np.array([0,0,0],dtype=np.float32).T
         self.rotation=np.eye(3)
-        self.r=40/2*3
-        self.h=50/2*3
+        self.r=40/2
+        self.h=50/2
 
         for i in range(6):
             x=math.cos(math.radians(60*i))*self.r
@@ -91,7 +91,7 @@ class TrackerObject:
         
                 # X軸 (赤)
         x_axis_world = self.rotation @ np.array([50, 0, 0]).T+self.position
-        print(f"{self.position=},{x_axis_world=}")
+        # print(f"{self.position=},{x_axis_world=}")
         ax.plot([self.position[0], x_axis_world[0]],
                 [self.position[1], x_axis_world[1]],
                 [self.position[2], x_axis_world[2]], color='red')
