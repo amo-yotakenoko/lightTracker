@@ -177,11 +177,14 @@ def compute_rotation_gradient( object, cameras, eps=0.1):
 def estimation(cameras):
     fig = plt.figure()
     fig.subplots_adjust(left=0, right=1, top=1, bottom=0)
-    ax = fig.add_subplot(111, projection='3d')
+    ax = fig.add_subplot(121, projection='3d')
+    ax_zoom = fig.add_subplot(122, projection='3d')
     plt.ion() # インタラクティブモードをオン
     while True:
         ax.cla()
+        ax_zoom.cla()
         plot_board(ax)
+        plot_board(ax_zoom)
         for cam in cameras:
             if cam.camera_position is None or cam.camera_rotation is None:
                 continue
@@ -196,11 +199,6 @@ def estimation(cameras):
                 # print(f"{define_sign.marker_display_colors[marker.estimate_id()[0]]=}")
                 draw_uv_line( cam, marker.position,ax,text=f"{marker.estimate_id()}",color=define_sign.marker_display_colors[marker.estimate_id()[0]])
 
-
-
-        for object in tracker_object.objects:
-            # print("----")
-            object.plot(ax)
             tracker_object.error_distance(object.transformed_markers(), cameras,ax=ax)
             for i in range(5):
                 grad_pos = compute_position_gradient( object, cameras)
@@ -214,15 +212,16 @@ def estimation(cameras):
             # u, _, v = np.linalg.svd(object.rotation)
             # object.rotation = u @ v
 
-
+        for object in tracker_object.objects:
+            # print("----")
+            object.plot(ax)
+            object.plot(ax_zoom)
        
         size=chArUco_board.squares_y * chArUco_board.square_length_mm*2
         offset = np.array([
             size/2*0.5,size/2,-size/2
         ], dtype=np.float32)
-        if False:
-            size=200
-            offset=object.position
+
 
         ax.set_xlim([offset[0]-size/2, offset[0]+size/2])
         ax.set_ylim([offset[1]+size/2, offset[1]-size/2])
@@ -230,6 +229,15 @@ def estimation(cameras):
         ax.set_xlabel('X')
         ax.set_ylabel('Y')
         ax.set_zlabel('Z')
+
+
+
+        size=150
+        offset=object.position
+        ax_zoom.set_xlim([offset[0]-size/2, offset[0]+size/2])
+        ax_zoom.set_ylim([offset[1]+size/2, offset[1]-size/2])
+        ax_zoom.set_zlim([ offset[2]+size/2, offset[2]-size/2])
+  
 
         # print(f"{object.position=}")
 
