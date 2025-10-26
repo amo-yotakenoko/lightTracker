@@ -25,6 +25,7 @@ output_height_px = 420*10
 
 # --- ChArUcoボードの生成 ---
 
+
 # 1. ChArUcoBoardオブジェクトの作成
 board = cv2.aruco.CharucoBoard(
     size=(squares_x, squares_y),

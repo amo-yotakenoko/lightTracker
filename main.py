@@ -12,20 +12,22 @@ from arduino_controller import led_set, led_show, led_clear
 import settings
 import estimation
 import chAruco_calibration
+
+
+
 load_dotenv()
 print("環境変数読み込み")
 if settings.mode=="serialSync":
     arduino_controller.initialize()
 
 
-camera_ids=[0]
+camera_ids=[1]
 marker_id_to_color_id=[-1] *30
 
 
 
 cameras = []
 threadings=[]
-marker_update_event = threading.Event()
 camera_done_events = []
 
 
@@ -35,17 +37,20 @@ y_offset = 50  # 画面上からの開始位置
 x_spacing = 700 # ウィンドウ幅想定
 y_spacing = 300 # ウィンドウ高さ想定
 
+print("カメラ初期化")
 for idx, camera_id in enumerate(camera_ids):
         print(f"{camera_id}")
             # ウィンドウ位置を計算（横に並べる例）
         x = x_offset + (idx % 3) * x_spacing
         y = y_offset + (idx // 3) * y_spacing
 
+        print(" cam = camera.Camera(marker_id_to_color_id)")
         cam = camera.Camera(marker_id_to_color_id)
+        
         cameras.append(cam)
+        print("cap=cv2.VideoCapture(camera_id)")
         cap=cv2.VideoCapture(camera_id)
-        done_event = threading.Event()
-        camera_done_events.append(done_event)
+
         threadings.append(threading.Thread(target=cam.detect_markers,
                                       daemon=True,
                                         args=(f"{camera_id}",
@@ -54,7 +59,7 @@ for idx, camera_id in enumerate(camera_ids):
         
 
 
-
+print("estimation thread")
 
 
 threadings.append(threading.Thread(target=estimation.estimation,

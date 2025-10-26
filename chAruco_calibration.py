@@ -12,10 +12,7 @@ board = chArUco_board.board
 # -----------------------------
 # 2. カメラ準備
 # -----------------------------
-cap = cv2.VideoCapture(0)
-all_corners = []
-all_ids = []
-image_size = None
+
 
 
 
@@ -44,6 +41,10 @@ def load_camera_params(filename="camera_params.npz"):
 
 
 def calc_camera_params(save_interval = 2.0):
+    cap = None
+    all_corners = []
+    all_ids = []
+    image_size = None
     last_save_time = 0   # 前回保存時間
     image_size= None
 
@@ -133,6 +134,7 @@ def calc_camera_params(save_interval = 2.0):
         return camera_matrix, dist_coeffs
     else:
         print("十分な Charuco コーナーが検出されませんでした。")
+
 
 
 camera_matrix,dist_coeffs= load_camera_params("camera_params.npz")

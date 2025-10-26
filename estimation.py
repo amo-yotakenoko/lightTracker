@@ -165,9 +165,14 @@ def compute_rotation_gradient( object, cameras, eps=0.1):
 
         # 中心差分
         grad_rotvec[i] = (err_plus - err_minus) / (2*eps)
+  
+    if np.linalg.norm(grad_rotvec) > 0:
+        max_grad = 1e3  # 適当な上限
+        grad_rotvec = np.clip(grad_rotvec, -max_grad, max_grad)
 
         # 回転更新
         delta_rot = R.from_rotvec(-grad_rotvec * 0.0001)  # 学習率的に調整
+
         rot = delta_rot * rot
     return rot
 
@@ -202,7 +207,7 @@ def estimation(cameras):
 
             tracker_object.error_distance(object.transformed_markers(), cameras,ax=ax)
             tracker_object.error_distance(object.transformed_markers(), cameras,ax=ax_zoom)
-            for i in range(5):
+            for i in range(1):
                 grad_pos = compute_position_gradient( object, cameras)
                 object.position += grad_pos
 
@@ -234,7 +239,7 @@ def estimation(cameras):
 
 
 
-        size=150
+        size=200
         offset=object.position
         ax_zoom.set_xlim([offset[0]-size/2, offset[0]+size/2])
         ax_zoom.set_ylim([offset[1]+size/2, offset[1]-size/2])

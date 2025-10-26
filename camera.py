@@ -77,8 +77,8 @@ class Camera:
             self.camera_position, self.camera_rotation = self.get_camera_pose()
 
             # 表示用にフレームを2倍にリサイズ
-            display_frame = cv2.resize(self.frame, (self.frame.shape[1] * 2, self.frame.shape[0] * 2), interpolation=cv2.INTER_CUBIC)
-            cv2.imshow(name, display_frame)
+            # frame = cv2.resize(self.frame, (self.frame.shape[1] * 2, self.frame.shape[0] * 2), interpolation=cv2.INTER_CUBIC)
+            cv2.imshow(name, self.frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
         print("カメラ姿勢の推定完了。")
@@ -147,8 +147,8 @@ class Camera:
 
             frame = cv2.aruco.drawDetectedMarkers(self.frame, self.corners, self.ids)
             cv2.drawFrameAxes(frame, self.camera_matrix, self.dist_coeffs,self.rvec, self.tvec, 25)
-            display_frame = cv2.resize(self.frame, (self.frame.shape[1] * 2, self.frame.shape[0] * 2), interpolation=cv2.INTER_CUBIC)
-            cv2.imshow(name, display_frame)
+            # frame = cv2.resize(self.frame, (self.frame.shape[1] * 2, self.frame.shape[0] * 2), interpolation=cv2.INTER_CUBIC)
+            cv2.imshow(name, self.frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
