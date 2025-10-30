@@ -9,13 +9,15 @@ from marker import Marker
 import chArUco_detect
 import chArUco_board
 import chAruco_calibration
+import keyboard
 
 class Camera:
 
-    def __init__(self, marker_id_to_color_id):
+    def __init__(self, marker_id_to_color_id, camera_id):
         self.marker_id_to_color_id = marker_id_to_color_id
         self.markers = []
         self.frame = None
+        self.camera_id = camera_id
 
         self.camera_position = None
         self.camera_rotation = None
@@ -51,20 +53,22 @@ class Camera:
             return None, None
         return chArUco_detect.get_camera_pose(self.frame, self)
 
-    def detect_markers(self, name, cap, window_pos):
-       
+    def detect_markers(self, name, window_pos):
+        print(f"{self.camera_id} detect_markers start")
         cv2.namedWindow(name)
         cv2.moveWindow(name, window_pos[0], window_pos[1])
-
-
+        print(f"cap = cv2.VideoCapture({self.camera_id})")
+        cap = cv2.VideoCapture(self.camera_id,cv2.CAP_MSMF)
+        print(f"cap = cv2.VideoCapture({self.camera_id})2")
         self._initialize_camera_parameters(cap)
 
         cap.set(cv2.CAP_PROP_BRIGHTNESS, 100)
         cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, 1)
 
         print("カメラの姿勢を推定中...")
-        while self.camera_position is None or self.camera_rotation is None:
+        while True:
             ret, self.frame = cap.read()
+            # print("read")
             self.height, self.width = self.frame.shape[:2]
             if not ret:
                 print("カメラが見つかりません。")
@@ -75,6 +79,10 @@ class Camera:
             self.corners, self.ids, _ = cv2.aruco.detectMarkers(gray, chArUco_board.aruco_dict)
 
             self.camera_position, self.camera_rotation = self.get_camera_pose()
+
+
+            if self.camera_position is not None and self.camera_rotation is not None:
+                break
 
             # 表示用にフレームを2倍にリサイズ
             # frame = cv2.resize(self.frame, (self.frame.shape[1] * 2, self.frame.shape[0] * 2), interpolation=cv2.INTER_CUBIC)
@@ -87,6 +95,14 @@ class Camera:
         cap.set(cv2.CAP_PROP_EXPOSURE, -9)
         # time.sleep(1)
         while True:
+
+            if keyboard.is_pressed('z'):
+                    print("一時停止中... 再開するには再度スペースキーを押してください。")
+
+                    while not keyboard.is_pressed('x'):
+                        time.sleep(0.1)  
+                    print("再開します。")
+
             ret, self.frame = cap.read()
             if not ret:
                 print("カメラ読み取り失敗")

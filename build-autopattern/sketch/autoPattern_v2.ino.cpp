@@ -8,7 +8,7 @@
 
 #define use_color 2
 #define pattern_loop 5
-#define PATTERN_DELAY 20
+#define PATTERN_DELAY 50
 Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
 int lightPower = 255;
 const uint32_t colors[] = {strip.Color(lightPower, 0, 0), strip.Color(0, lightPower, 0), strip.Color(0, 0, lightPower)};

@@ -21,7 +21,7 @@ if settings.mode=="serialSync":
     arduino_controller.initialize()
 
 
-camera_ids=[1]
+camera_ids=[0,1,2]
 marker_id_to_color_id=[-1] *30
 
 
@@ -45,16 +45,16 @@ for idx, camera_id in enumerate(camera_ids):
         y = y_offset + (idx // 3) * y_spacing
 
         print(" cam = camera.Camera(marker_id_to_color_id)")
-        cam = camera.Camera(marker_id_to_color_id)
+        cam = camera.Camera(marker_id_to_color_id,camera_id =camera_id)
         
         cameras.append(cam)
         print("cap=cv2.VideoCapture(camera_id)")
-        cap=cv2.VideoCapture(camera_id)
+        
 
         threadings.append(threading.Thread(target=cam.detect_markers,
                                       daemon=True,
                                         args=(f"{camera_id}",
-                   cap,
+                
                    (x,y),)))
         
 

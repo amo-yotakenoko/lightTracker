@@ -7,8 +7,8 @@ class TrackerObject:
         self.markers={}
         self.position=np.array([0,0,0],dtype=np.float32).T
         self.rotation=np.eye(3)
-        self.r=40
-        self.h=50
+        self.r=40/2*2
+        self.h=50/2*2
 
         for i in range(6):
             x=math.cos(math.radians(60*i))*self.r
@@ -29,10 +29,7 @@ class TrackerObject:
             transformed_pos = rotation @ pos + position
             yield i, transformed_pos
 
-    
 
-
-        
 
 
 
@@ -156,7 +153,11 @@ def error_distance(transformed_markers,cameras,ax=None):
                 # t = max(0, min(1, t))  # tを0から1の範囲に制限
                 projection = p0 + t * line_vec
                 distance = np.linalg.norm(p2 - projection)
-                total_error += distance**2
+
+                if not np.isfinite(distance) or distance > 1e6:
+                    
+                    continue
+                total_error += distance
                                
                 # if ax is not None:
                 #     # 元の直線を描画（任意の長さ）

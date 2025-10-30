@@ -55,9 +55,9 @@ def draw_uv_line(cam,uv,ax,color=None,text=None):
                             [cam.camera_position[1, 0], ray_end[1, 0]],
                             [cam.camera_position[2, 0], ray_end[2, 0]],color=color)
     
-    if text is not None:
-        color = color if color is not None else 'black'
-        ax.text(ray_end[0, 0], ray_end[1, 0], ray_end[2, 0], text, color=color )
+    # if text is not None:
+    #     color = color if color is not None else 'black'
+    #     ax.text(ray_end[0, 0], ray_end[1, 0], ray_end[2, 0], text, color=color )
 
 
 
@@ -142,17 +142,18 @@ def compute_position_gradient( object, cameras, eps=0.1):
     grad[2] = tracker_object.error_distance(object.transformed_markers(add_position=shifts[4]), cameras) - \
               tracker_object.error_distance(object.transformed_markers(add_position=shifts[5]), cameras)
     
-    grad *= 0.5  
+
+    # grad = np.clip(grad, -100z, 100)
     return grad
 
 
-def compute_rotation_gradient( object, cameras, eps=0.1):
+def compute_rotation_gradient( object, cameras, eps=0.0001):
     # 現在の回転
     rot = R.identity()
 
     grad_rotvec = np.zeros(3)  # X, Y, Z軸の回転ベクトル勾配
 
-    for i, axis in enumerate(['x', 'y', 'z']):
+    for i in [0,1,2]:
         # 微小回転
         delta = np.zeros(3)
         delta[i] = eps  # 軸方向だけ回転
@@ -171,7 +172,7 @@ def compute_rotation_gradient( object, cameras, eps=0.1):
         grad_rotvec = np.clip(grad_rotvec, -max_grad, max_grad)
 
         # 回転更新
-        delta_rot = R.from_rotvec(-grad_rotvec * 0.0001)  # 学習率的に調整
+        delta_rot = R.from_rotvec(-grad_rotvec * 0.001)  # 学習率的に調整
 
         rot = delta_rot * rot
     return rot
@@ -205,11 +206,11 @@ def estimation(cameras):
                 draw_uv_line( cam, marker.position,ax,text=f"{marker.estimate_id()}",color=define_sign.marker_display_colors[marker.estimate_id()[0]])
                 draw_uv_line( cam, marker.position,ax_zoom,color=define_sign.marker_display_colors[marker.estimate_id()[0]])
 
-            tracker_object.error_distance(object.transformed_markers(), cameras,ax=ax)
-            tracker_object.error_distance(object.transformed_markers(), cameras,ax=ax_zoom)
+            # tracker_object.error_distance(object.transformed_markers(), cameras,ax=ax)
+            # tracker_object.error_distance(object.transformed_markers(), cameras,ax=ax_zoom)
             for i in range(1):
                 grad_pos = compute_position_gradient( object, cameras)
-                object.position += grad_pos
+                object.position += grad_pos*5
 
 
                 grad_rot = compute_rotation_gradient( object, cameras)
