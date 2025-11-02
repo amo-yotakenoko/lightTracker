@@ -53,7 +53,7 @@ def draw_uv_line(cam,uv,ax,color=None,text=None):
 
     ax.plot([cam.camera_position[0, 0], ray_end[0, 0]],
                             [cam.camera_position[1, 0], ray_end[1, 0]],
-                            [cam.camera_position[2, 0], ray_end[2, 0]],color=color,lw=0.1)
+                            [cam.camera_position[2, 0], ray_end[2, 0]],color=color,lw=0.5)
     
     # if text is not None:
     #     color = color if color is not None else 'black'
@@ -200,7 +200,41 @@ def compute_rotation_gradient( object, cameras, eps=1e-3):
         rot = delta_rot * rot
     return rot
 
+def estimate_pose_from_markers(origin_points, target_points):
+    """
+    origin_points : list or ndarray (N,3)  # モデル上のマーカー座標（物体座標系）
+    target_points : list or ndarray (N,3)  # 観測されたマーカーの3D位置（ワールド座標系）
+    
+    return:
+        R_opt (3x3) 回転行列
+        t_opt (3,)   並進ベクトル
+    """
+    origin_points = np.array(origin_points)
+    target_points = np.array(target_points)
 
+    if len(origin_points) < 3:
+        raise ValueError("At least 3 points are required for pose estimation")
+
+    # 1. 重心を求めて中心化
+    centroid_origin = np.mean(origin_points, axis=0)
+    centroid_target = np.mean(target_points, axis=0)
+    origin_centered = origin_points - centroid_origin
+    target_centered = target_points - centroid_target
+
+    # 2. Kabsch法で回転行列を求める
+    H = origin_centered.T @ target_centered
+    U, S, Vt = np.linalg.svd(H)
+    R_opt = Vt.T @ U.T
+
+    # 右手系を維持（det(R) < 0 の場合は反転補正）
+    if np.linalg.det(R_opt) < 0:
+        Vt[2, :] *= -1
+        R_opt = Vt.T @ U.T
+
+    # 3. 平行移動ベクトルを計算
+    t_opt = centroid_target - R_opt @ centroid_origin
+
+    return t_opt,R_opt
 
 
 def estimation(cameras):
@@ -258,6 +292,29 @@ def estimation(cameras):
             ax_zoom.text(pos[0], pos[1], pos[2], f"{marker_id}")
 
 
+        for object in tracker_object.objects:
+            # print("----")
+            # print(f"{marker_3d_points=}")
+            # print(f"{list(object.transformed_markers())=}")
+            # print(f"{object.position=}")
+            # print(f"{object.rotation=}")
+            target_points=[]
+            origin_points=[]
+
+            for marker_id, object_marker_3d_point in object.markers.items():
+                if marker_3d_points[marker_id] is None:
+                    continue
+                detect_marker_3d_point = marker_3d_points[marker_id]
+                target_points.append(detect_marker_3d_point)
+                origin_points.append(object_marker_3d_point)
+                
+
+            # print(f"{(origin_points)=}\n{(target_points)=}")
+            if(len(origin_points)>=3):
+                object.position,object.rotation=  estimate_pose_from_markers(origin_points, target_points)
+                # estimate_pose_from_markers(origin_points, target_points)
+                # print(f"object position updated:{object.position=}")
+                # print(f"object rotation updated:\n{object.rotation=}")
 
             
 
@@ -275,21 +332,24 @@ def estimation(cameras):
                 # print(f"{define_sign.marker_display_colors[marker.estimate_id()[0]]=}")
 
 
-                # draw_uv_line( cam, marker.position,ax,text=f"{marker.estimate_id()}",color=define_sign.marker_display_colors[marker.estimate_id()[0]])
-                # draw_uv_line( cam, marker.position,ax_zoom,color=define_sign.marker_display_colors[marker.estimate_id()[0]])
+                draw_uv_line( cam, marker.position,ax,text=f"{marker.estimate_id()}",color=define_sign.marker_display_colors[marker.estimate_id()[0]])
+                draw_uv_line( cam, marker.position,ax_zoom,color=define_sign.marker_display_colors[marker.estimate_id()[0]])
 
             
 
 
             # tracker_object.error_distance(object.transformed_markers(), cameras,ax=ax)
             # tracker_object.error_distance(object.transformed_markers(), cameras,ax=ax_zoom)
-            for i in range(1):
-                grad_pos = compute_position_gradient( object, cameras)
-                object.position += grad_pos*10
 
 
-                grad_rot = compute_rotation_gradient( object, cameras)
-                object.rotation = object.rotation @  grad_rot.as_matrix()
+
+            # for i in range(1):
+            #     grad_pos = compute_position_gradient( object, cameras)
+            #     object.position += grad_pos*10
+
+
+            #     grad_rot = compute_rotation_gradient( object, cameras)
+            #     object.rotation = object.rotation @  grad_rot.as_matrix()
 
 
             # u, _, v = np.linalg.svd(object.rotation)

@@ -7,8 +7,8 @@ class TrackerObject:
         self.markers={}
         self.position=np.array([0,0,0],dtype=np.float32).T
         self.rotation=np.eye(3)
-        self.r=40/2*2
-        self.h=50/2*2
+        self.r=40
+        self.h=50
 
         for i in range(6):
             x=math.cos(math.radians(60*i))*self.r

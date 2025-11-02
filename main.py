@@ -21,7 +21,7 @@ if settings.mode=="serialSync":
     arduino_controller.initialize()
 
 
-camera_ids=[0,1]
+camera_ids=[0,1,2]
 marker_id_to_color_id=[-1] *30
 
 
