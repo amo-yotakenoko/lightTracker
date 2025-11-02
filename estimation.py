@@ -9,7 +9,7 @@ from scipy.spatial.transform import Rotation as R
 import define_sign
 import cv2
 
-
+marker_3d_points=[None]*30
 
 def uv_to_ray(cam, uv, scale=10000.0):
     """
@@ -53,7 +53,7 @@ def draw_uv_line(cam,uv,ax,color=None,text=None):
 
     ax.plot([cam.camera_position[0, 0], ray_end[0, 0]],
                             [cam.camera_position[1, 0], ray_end[1, 0]],
-                            [cam.camera_position[2, 0], ray_end[2, 0]],color=color)
+                            [cam.camera_position[2, 0], ray_end[2, 0]],color=color,lw=0.1)
     
     # if text is not None:
     #     color = color if color is not None else 'black'
@@ -117,6 +117,29 @@ def plot_board(ax):
         ])
         # 線で描画
         ax.plot(rect_path[:,0], rect_path[:,1], rect_path[:,2], color='r', linewidth=2)
+
+
+
+def estimate_marker_position(ray_list):
+    """複数の (origin, direction) から最小二乗交点を求める"""
+    if len(ray_list) < 2:
+        return None  # データ不足
+
+    A = np.zeros((3, 3))
+    b = np.zeros(3)
+
+    for origin, direction in ray_list:
+        p = origin.flatten()
+        d = direction.flatten()
+        I = np.eye(3)
+        A_i = I - np.outer(d, d)
+        A += A_i
+        b += A_i @ p
+
+    # 最小二乗解
+    x, _, _, _ = np.linalg.lstsq(A, b, rcond=None)
+    return x
+
 
 
 
@@ -191,6 +214,53 @@ def estimation(cameras):
         ax_zoom.cla()
         plot_board(ax)
         plot_board(ax_zoom)
+
+        rays = {i: [] for i in range(30)}
+
+        for cam in cameras:
+            for marker in cam.markers:
+                marker_ids = marker.estimate_id()
+                # IDが有効か確認
+                if marker_ids is None or len(marker_ids) != 1:
+                    continue
+
+                marker_id = marker_ids[0]
+
+                # カメラ位置とレイ方向の算出
+                ray_end = uv_to_ray(cam, marker.position)
+                origin = np.array(cam.camera_position, dtype=float).reshape(3, 1)
+                direction = np.array(ray_end, dtype=float).reshape(3, 1) - origin
+
+                # 正規化（ゼロ除算防止）
+                norm = np.linalg.norm(direction)
+                if norm < 1e-6:
+                    continue
+                direction /= norm
+
+                # 形式統一：3x1 numpy配列ペア
+                rays[marker_id].append((origin, direction))
+
+
+                for marker_id, ray_list in rays.items():            
+                    if len(ray_list)<2:
+                        continue
+                    # print(f"marker_id={marker_id} ray_count={len(ray_list)}")
+                    # print(f"{ray_list=}")
+
+
+        
+        for marker_id, ray_list in rays.items():
+            if len(ray_list) < 2:
+                continue
+            pos = estimate_marker_position(ray_list)
+            marker_3d_points[marker_id]=pos
+            ax_zoom.scatter(*pos, s=60, color=define_sign.marker_display_colors[marker_id])
+            ax_zoom.text(pos[0], pos[1], pos[2], f"{marker_id}", color=define_sign.marker_display_colors[marker_id])
+
+
+
+            
+
         for cam in cameras:
             if cam.camera_position is None or cam.camera_rotation is None:
                 continue
@@ -203,14 +273,19 @@ def estimation(cameras):
 
                 # print(f"{marker.position=},{marker.estimate_id()=}" )
                 # print(f"{define_sign.marker_display_colors[marker.estimate_id()[0]]=}")
-                draw_uv_line( cam, marker.position,ax,text=f"{marker.estimate_id()}",color=define_sign.marker_display_colors[marker.estimate_id()[0]])
-                draw_uv_line( cam, marker.position,ax_zoom,color=define_sign.marker_display_colors[marker.estimate_id()[0]])
+
+
+                # draw_uv_line( cam, marker.position,ax,text=f"{marker.estimate_id()}",color=define_sign.marker_display_colors[marker.estimate_id()[0]])
+                # draw_uv_line( cam, marker.position,ax_zoom,color=define_sign.marker_display_colors[marker.estimate_id()[0]])
+
+            
+
 
             # tracker_object.error_distance(object.transformed_markers(), cameras,ax=ax)
             # tracker_object.error_distance(object.transformed_markers(), cameras,ax=ax_zoom)
-            for i in range(1):
+            for i in range(10):
                 grad_pos = compute_position_gradient( object, cameras)
-                object.position += grad_pos*5
+                object.position += grad_pos*10
 
 
                 grad_rot = compute_rotation_gradient( object, cameras)

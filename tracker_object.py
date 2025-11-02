@@ -11,8 +11,8 @@ class TrackerObject:
         self.h=50/2*2
 
         for i in range(6):
-            x=math.cos(math.radians(60*i))*self.r
-            y=math.sin(math.radians(60*i))*self.r
+            x=math.cos(math.radians(60*-i))*self.r
+            y=math.sin(math.radians(60*-i))*self.r
             z=(0 if i%2==0 else self.h)
             self.markers[i]=np.array([x,y,z]).T
 
@@ -116,6 +116,15 @@ def error_distance(transformed_markers,cameras,ax=None):
     transformed_markers=list(transformed_markers)
 
     total_error=0
+
+    total_error+= marker_3d_error(transformed_markers)
+
+    # total_error+= line_error(transformed_markers, cameras, ax)
+
+    return total_error 
+
+def line_error(transformed_markers, cameras, ax):
+    error=0
     for cam in cameras:
         if cam.camera_position is None or cam.camera_rotation is None:
             continue
@@ -133,10 +142,11 @@ def error_distance(transformed_markers,cameras,ax=None):
             #                 [cam.camera_position[2, 0], ray_emit[2, 0]],color='blue',
             #             linestyle='--')
             
+        # return total_error
+            
 
             for obj_id, obj_pos in transformed_markers:
                 # print(f"Marker ID: {marker_id}, Object ID: {obj_id}")
-
                 if obj_id != marker_id:
                     continue
                 # 点と直線の距離計算
@@ -155,9 +165,8 @@ def error_distance(transformed_markers,cameras,ax=None):
                 distance = np.linalg.norm(p2 - projection)
 
                 if not np.isfinite(distance) or distance > 1e6:
-                    
                     continue
-                total_error += distance
+                error += distance
                                
                 # if ax is not None:
                 #     # 元の直線を描画（任意の長さ）
@@ -189,5 +198,16 @@ def error_distance(transformed_markers,cameras,ax=None):
                         linestyle='-',
                         linewidth=0.5,
                     )
+                    
+    return error
 
-    return total_error 
+def marker_3d_error(transformed_markers):
+    error=0
+    for i,transformed_marker in enumerate( transformed_markers):
+        detect_marker_3d_point=estimation.marker_3d_points[i]
+        if detect_marker_3d_point is None:
+            continue
+        # print(f"{detect_marker_3d_point=},{transformed_marker=}")
+        marker_id,marker_3d_point=transformed_marker
+        error+=np.linalg.norm(detect_marker_3d_point -marker_3d_point)
+    return error
