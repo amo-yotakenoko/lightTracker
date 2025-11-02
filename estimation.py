@@ -170,7 +170,7 @@ def compute_position_gradient( object, cameras, eps=0.1):
     return grad
 
 
-def compute_rotation_gradient( object, cameras, eps=0.0001):
+def compute_rotation_gradient( object, cameras, eps=1e-3):
     # 現在の回転
     rot = R.identity()
 
@@ -195,7 +195,7 @@ def compute_rotation_gradient( object, cameras, eps=0.0001):
         grad_rotvec = np.clip(grad_rotvec, -max_grad, max_grad)
 
         # 回転更新
-        delta_rot = R.from_rotvec(-grad_rotvec * 0.001)  # 学習率的に調整
+        delta_rot = R.from_rotvec(-grad_rotvec * 0.01)  # 学習率的に調整
 
         rot = delta_rot * rot
     return rot
@@ -255,7 +255,7 @@ def estimation(cameras):
             pos = estimate_marker_position(ray_list)
             marker_3d_points[marker_id]=pos
             ax_zoom.scatter(*pos, s=60, color=define_sign.marker_display_colors[marker_id])
-            ax_zoom.text(pos[0], pos[1], pos[2], f"{marker_id}", color=define_sign.marker_display_colors[marker_id])
+            ax_zoom.text(pos[0], pos[1], pos[2], f"{marker_id}")
 
 
 
@@ -283,7 +283,7 @@ def estimation(cameras):
 
             # tracker_object.error_distance(object.transformed_markers(), cameras,ax=ax)
             # tracker_object.error_distance(object.transformed_markers(), cameras,ax=ax_zoom)
-            for i in range(10):
+            for i in range(1):
                 grad_pos = compute_position_gradient( object, cameras)
                 object.position += grad_pos*10
 

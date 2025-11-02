@@ -11,9 +11,9 @@ class TrackerObject:
         self.h=50/2*2
 
         for i in range(6):
-            x=math.cos(math.radians(60*-i))*self.r
-            y=math.sin(math.radians(60*-i))*self.r
-            z=(0 if i%2==0 else self.h)
+            x=math.cos(math.radians(60*i))*self.r
+            y=math.sin(math.radians(60*i))*self.r
+            z=(0 if i%2!=0 else self.h)
             self.markers[i]=np.array([x,y,z]).T
 
 
@@ -117,7 +117,7 @@ def error_distance(transformed_markers,cameras,ax=None):
 
     total_error=0
 
-    total_error+= marker_3d_error(transformed_markers)
+    total_error+= marker_3d_error(transformed_markers,ax)
 
     # total_error+= line_error(transformed_markers, cameras, ax)
 
@@ -201,7 +201,7 @@ def line_error(transformed_markers, cameras, ax):
                     
     return error
 
-def marker_3d_error(transformed_markers):
+def marker_3d_error(transformed_markers,ax=None):
     error=0
     for i,transformed_marker in enumerate( transformed_markers):
         detect_marker_3d_point=estimation.marker_3d_points[i]
@@ -209,5 +209,9 @@ def marker_3d_error(transformed_markers):
             continue
         # print(f"{detect_marker_3d_point=},{transformed_marker=}")
         marker_id,marker_3d_point=transformed_marker
+        if ax is not None:
+            ax.plot([detect_marker_3d_point[0],marker_3d_point[0]],
+                    [detect_marker_3d_point[1],marker_3d_point[1]],
+                    [detect_marker_3d_point[2],marker_3d_point[2]],color='orange',linestyle='--',linewidth=0.5)
         error+=np.linalg.norm(detect_marker_3d_point -marker_3d_point)
     return error
