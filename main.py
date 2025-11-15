@@ -32,9 +32,9 @@ camera_done_events = []
 
 
 # ウィンドウ位置をずらす設定
-x_offset = 50  # 画面左からの開始位置
-y_offset = 50  # 画面上からの開始位置
-x_spacing = 700 # ウィンドウ幅想定
+x_offset = 0  # 画面左からの開始位置
+y_offset = 0  # 画面上からの開始位置
+x_spacing = 640 # ウィンドウ幅想定
 y_spacing = 300 # ウィンドウ高さ想定
 
 print("カメラ初期化")

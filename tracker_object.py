@@ -33,7 +33,7 @@ class TrackerObject:
 
 
 
-    def plot(self,ax):
+    def plot(self,ax,axis_length=50):
         xs=[]
         ys=[]
         zs=[]
@@ -87,18 +87,18 @@ class TrackerObject:
         #         [self.position[2], z_axis_world[2, 0]], color='blue', label='Cam Z')
         
                 # X軸 (赤)
-        x_axis_world = self.rotation @ np.array([50, 0, 0]).T+self.position
+        x_axis_world = self.rotation @ np.array([axis_length, 0, 0]).T+self.position
         # print(f"{self.position=},{x_axis_world=}")
         ax.plot([self.position[0], x_axis_world[0]],
                 [self.position[1], x_axis_world[1]],
                 [self.position[2], x_axis_world[2]], color='red')
         # Y軸 (緑)
-        y_axis_world = self.rotation @ np.array([0, 50, 0]).T +self.position
+        y_axis_world = self.rotation @ np.array([0, axis_length, 0]).T +self.position
         ax.plot([self.position[0], y_axis_world[0]],
                 [self.position[1], y_axis_world[1]],
                 [self.position[2], y_axis_world[2]], color='green')
         # Z軸 (青)
-        z_axis_world = self.rotation @ np.array([0, 0, 50]).T +self.position
+        z_axis_world = self.rotation @ np.array([0, 0, axis_length]).T +self.position
         ax.plot([self.position[0], z_axis_world[0]],
                 [self.position[1], z_axis_world[1]],
                 [self.position[2], z_axis_world[2]], color='blue')

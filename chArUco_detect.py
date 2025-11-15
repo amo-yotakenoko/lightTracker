@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from scipy.spatial.transform import Rotation
 import matplotlib.patches as patches
 import chArUco_board
+import settings 
 # --- 設定パラメータ ---
 
 
@@ -86,7 +87,7 @@ def get_camera_pose(frame, camera, ax=None):
                 # ボードを「壁」に見せるための変換
                 # ボード座標系(B)をワールド座標系(W)に変換するための回転
                 # Scipyを使用して回転を定義: X軸90度 -> Y軸90度 (extrinsic)
-                rot = Rotation.from_euler('XYZ', [90, 0,-90], degrees=True)
+                rot = Rotation.from_euler('XYZ', settings.board_rotation, degrees=True)
                 #ボードからワールドに
                 R_W_B = rot.as_matrix()
 

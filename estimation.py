@@ -9,6 +9,8 @@ from scipy.spatial.transform import Rotation as R
 import define_sign
 import cv2
 
+import settings 
+
 marker_3d_points=[None]*30
 
 def uv_to_ray(cam, uv, scale=10000.0):
@@ -105,19 +107,29 @@ def plot_camera_pose(cam,ax):
 
 
 def plot_board(ax):
-        x1, y1 = chArUco_board.squares_y * chArUco_board.square_length_mm, -chArUco_board.squares_x * chArUco_board.square_length_mm
-        # print(f"board:{x1=},{y1=}")
-        # 頂点を順に並べる（時計回り）
-        rect_path = np.array([
-            [0,0, 0],  # 左下
-            [x1,0, 0],  # 右下
-            [x1,0, y1],  # 右上
-            [0,0, y1],  # 左上
-            [0,0, 0],  # 左下に戻る（閉じる）
-        ])
-        # 線で描画
-        ax.plot(rect_path[:,0], rect_path[:,1], rect_path[:,2], color='r', linewidth=2)
+    x1 = chArUco_board.squares_y * chArUco_board.square_length_mm
+    y1 = chArUco_board.squares_x * chArUco_board.square_length_mm
 
+    # 頂点を順に並べる（時計回り）
+    rect_path = np.array([
+        [0, 0, 0],       # 左下
+        [y1, 0, 0],     # 右下
+        [y1, x1, 0],    # 右上
+        [0, x1, 0],      # 左上
+        [0, 0, 0],       # 左下に戻る
+    ]).T  # 3xN に転置して掛け算しやすくする
+
+    # # rotation 行列を作る（X,Y,Z軸での回転）
+    # R_total = R.from_euler('XYZ', settings.board_rotation, degrees=True).as_matrix()
+
+    # # 全座標に適用
+    # rotated_path = R_total @ rect_path
+
+    # 3xN → Nx3 に戻す
+    rotated_path = rect_path.T
+
+    # 描画
+    ax.plot(rotated_path[:, 0], rotated_path[:, 1], rotated_path[:, 2], color='r', linewidth=2)
 
 
 def estimate_marker_position(ray_list):
@@ -357,10 +369,11 @@ def estimation(cameras):
 
         for object in tracker_object.objects:
             # print("----")
+            
             object.plot(ax)
             object.plot(ax_zoom)
        
-        size=chArUco_board.squares_y * chArUco_board.square_length_mm*2
+        size=chArUco_board.squares_y * chArUco_board.square_length_mm*3
         offset = np.array([
             size/2*0.5,size/2,-size/2
         ], dtype=np.float32)
@@ -374,13 +387,14 @@ def estimation(cameras):
         ax.set_zlabel('Z')
 
 
-
         size=200
         offset=object.position
         ax_zoom.set_xlim([offset[0]-size/2, offset[0]+size/2])
         ax_zoom.set_ylim([offset[1]+size/2, offset[1]-size/2])
         ax_zoom.set_zlim([ offset[2]+size/2, offset[2]-size/2])
   
+        ax.view_init(elev=30, azim=time.time()*10) 
+        ax_zoom.view_init(elev=30, azim=time.time()*10) 
 
         # print(f"{object.position=}")
 
