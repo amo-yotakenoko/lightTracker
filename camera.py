@@ -108,7 +108,11 @@ class Camera:
                 print("カメラ読み取り失敗")
                 continue
 
-            gray_frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
+            # --- 高速化のための画像縮小 ---
+            scale = 0.5  # 50%に縮小
+            small_frame = cv2.resize(self.frame, (0, 0), fx=scale, fy=scale, interpolation=cv2.INTER_NEAREST)
+
+            gray_frame = cv2.cvtColor(small_frame, cv2.COLOR_BGR2GRAY)
             _, threshold_frame = cv2.threshold(gray_frame, 100, 255, cv2.THRESH_BINARY)
             contours, _ = cv2.findContours(threshold_frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -117,15 +121,21 @@ class Camera:
             for cnt in contours:
                 M = cv2.moments(cnt)
                 if M["m00"] != 0:
-                    cx = int(M["m10"] / M["m00"])
-                    cy = int(M["m01"] / M["m00"])
+                    # 座標を元のスケールに戻す
+                    cx = int(M["m10"] / M["m00"] / scale)
+                    cy = int(M["m01"] / M["m00"] / scale)
+                    
+                    # マスクは元のサイズのフレームに対して作成する必要がある
+                    original_scale_cnt = (cnt / scale).astype(np.int32)
                     mask = np.zeros(self.frame.shape[:2], dtype=np.uint8)
-                    cv2.drawContours(mask, [cnt], -1, 255, -1)
+                    cv2.drawContours(mask, [original_scale_cnt], -1, 255, -1)
+                    
                     mean_color = cv2.mean(self.frame, mask=mask)
                     detect_marker_mean_colors.append(mean_color[:3])
                     cv2.circle(self.frame, (cx, cy), 1, (0, 0, 255), -1)
                     detect_marker_positions.append([cx, cy])
-                    cv2.drawContours(self.frame, [cnt], -1, (0, 255, 0), 1)
+                    
+                    cv2.drawContours(self.frame, [original_scale_cnt], -1, (0, 255, 0), 1)
 
             markers_positions = np.array([m.position for m in self.markers], dtype=np.float32)
             detect_marker_positions = np.array(detect_marker_positions, dtype=np.float32)
